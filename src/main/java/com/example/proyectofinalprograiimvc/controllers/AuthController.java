@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Slf4j
 public class AuthController {
 
-    @GetMapping("/Login")
+    @GetMapping("/login")
     public String Login(){
         log.info("Ejecutando el controlador Spring MVC");
         return "Auth/Login";
     }
 
-    @GetMapping("/Register")
+    @GetMapping("/register")
     public String Register(){
         log.info("Ejecutando el controlador Spring MVC");
         return "Auth/Register";
