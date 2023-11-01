@@ -1,8 +1,7 @@
-<head th:replace="~{Shared/Layout::common_head(~{::title})}">
-    <title>Inicio de Sesión</title>
+<head th:replace="~{Shared/LayoutNoAuth::common_head(~{::title})}">
+    <title>Iniciar Sesión</title>
 </head>
-
-<body th:replace="~{Shared/Layout::common_layout(~{::section})}">
+<body th:replace="~{Shared/LayoutNoAuth::common_layout(~{::section})}">
     <section class="container py-5 h-100">
         <div class="row d-flex align-items-center justify-content-center h-100">
             <div class="col-md-8 col-lg-7 col-xl-6">
@@ -11,48 +10,42 @@
             <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
                 <div class="card" style="border-radius: 1rem; background-color: floralwhite">
 
-                    <div class="card-body p-5 text-center">
+                    <div class="card-body p-2 text-center">
                         <div th:if="${param.error}"  class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <i class="fas fa-exclamation-triangle"></i>  <Strong> Incorrect username or password, try again!</Strong>
+                            <i class="fas fa-exclamation-triangle"></i>  <Strong> credenciales incorrectos!</Strong>
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
 
-<!--                        <div th:if="${invalidSession !=null}"  class="alert alert-danger alert-dismissible fade show" role="alert">-->
-<!--                            <i class="fas fa-exclamation-triangle"></i>  <Strong> ${invalidSession}</Strong>-->
-<!--                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>-->
-<!--                        </div>-->
-
-                        <h1 class="mb-5">Welcome Back</h1>
+                        <h1 class="mb-5">Bienvenid@</h1>
                         <hr class="mt-4">
-                        <h2><i class="fas fa-money-check-alt"></i> Clinic Web App</h2>
-                        <p class="text-black mb-5">Please Enter you credentials to login into your account!</p>
+                        <p class="lead">Ingresa tus credenciales para iniciar sesion</p>
 
-                        <form id="login-form" class="form"  method="POST" th:action="@{/login}">
+                        <form id="login-form" class="row g-3 was-validated"  method="POST" th:action="@{/login}">
 
                             <!-- username input -->
                             <div class="form-outline mb-4">
-                                <label for="username" style="padding-right: 18rem"> <span class="fas fa-user"></span></label>
-
-                                <input type="text" name="username" id="username" class="form-control" placeholder="type your Username"
-                                       style ="border-radius: 20px" required>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                    <input type="email" name="username" id="username" class="form-control" placeholder="Correo Electrónico" required>
+                                </div>
                             </div>
 
                             <!-- Password input -->
                             <div class="form-outline mb-4">
-                                <label for="password" style="padding-right: 18rem"> <span class="fas fa-lock"></span></label>
-                                <input type="password" name="password" id="password" class="form-control"  placeholder="type your Password"
-                                       style ="border-radius: 20px" required
-                                >
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                    <input type="password" name="password" id="password" class="form-control" placeholder="Contraseña" required>
+                                </div>
                             </div>
 
                             <!-- Submit button -->
 
                             <button type="submit" class="btn btn-primary btn-lg" >
-                                <i class="fas fa-sign-in-alt"></i> Log in
+                                <i class="fas fa-sign-in-alt"></i> Iniciar Sesion
                             </button>
                             <hr class="mt-4">
-                            <p class="small fw-bold mt-2 pt-1 mb-0">Do you want to start donating today?
-                                <a th:href="@{/register}" class="link-danger">Register Now!</a>
+                            <p class="small fw-bold mt-2 pt-1 mb-0">No tienes cuenta aun?
+                                <a th:href="@{/register}" class="link-danger">Crear cuenta!</a>
                             </p>
                         </form>
                     </div>
