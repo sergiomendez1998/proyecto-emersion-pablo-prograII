@@ -8,7 +8,5 @@ public interface CrudService<T> {
     T buscarPorId(Long id);
     T guardar(T entidad);
     void eliminar(Long id);
-    boolean validarParaGuardar(T entidad);
-    boolean validarParaEliminar(T entidad);
-    boolean validarParaActualizar(T entidad);
+    void actualizar(T entidad);
 }

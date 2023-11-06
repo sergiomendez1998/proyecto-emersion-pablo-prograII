@@ -7,6 +7,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -29,7 +30,9 @@ public class SecurityConfig {
         http.authorizeHttpRequests(auth -> {
             auth.requestMatchers(
                     new AntPathRequestMatcher("/login"),
-                    new AntPathRequestMatcher("/register")).permitAll();
+                    new AntPathRequestMatcher("/register"),
+                    new AntPathRequestMatcher("/guardarCliente")
+            ).permitAll();
             auth.anyRequest().authenticated();
         }).formLogin(form -> {
             form.loginPage("/login");
@@ -39,7 +42,6 @@ public class SecurityConfig {
 
         return http.build();
     }
-
     @Bean
     AuthenticationManager authenticationManager(HttpSecurity httpSecurity, PasswordEncoder passwordEncoder)
             throws Exception {
@@ -49,4 +51,15 @@ public class SecurityConfig {
         return new ProviderManager(authenticationManagerBuilder);
     }
 
+    @Bean
+    public WebSecurityCustomizer ignoringCustomizer() {
+        return (web) -> web.ignoring().requestMatchers(
+                new AntPathRequestMatcher("/public/**"),
+                new AntPathRequestMatcher("/resources/**"),
+                new AntPathRequestMatcher("/static/**"),
+                new AntPathRequestMatcher("/css/**"),
+                new AntPathRequestMatcher("/js/**"),
+                new AntPathRequestMatcher("/images/**")
+        );
+    }
 }

@@ -7,6 +7,12 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.1/css/bootstrap.min.css}">
         <title th:replace="${title}">The awesome application</title>
+
+        <style>
+            .error-message {
+                color: red;            }
+        </style>
+
     </head>
     <body th:fragment="common_layout(main)">
         <header>

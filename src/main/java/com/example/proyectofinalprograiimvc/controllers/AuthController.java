@@ -1,5 +1,6 @@
 package com.example.proyectofinalprograiimvc.controllers;
 
+import com.example.proyectofinalprograiimvc.modelo.Cliente;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +16,7 @@ public class AuthController {
     }
 
     @GetMapping("/register")
-    public String Register(){
+    public String Register(Cliente cliente){
         log.info("Ejecutando el controlador Spring MVC");
         return "Auth/Register";
     }

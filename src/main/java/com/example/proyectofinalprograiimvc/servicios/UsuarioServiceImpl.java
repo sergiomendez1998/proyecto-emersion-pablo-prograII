@@ -22,12 +22,12 @@ public class UsuarioServiceImpl implements CrudService<Usuario>{
 
     @Override
     public Usuario buscarPorId(Long id) {
-        return null;
+        return usuarioRepositorio.findById(id).orElse(null);
     }
 
     @Override
     public Usuario guardar(Usuario entidad) {
-        return null;
+        return usuarioRepositorio.save(entidad);
     }
 
     @Override
@@ -36,19 +36,10 @@ public class UsuarioServiceImpl implements CrudService<Usuario>{
     }
 
     @Override
-    public boolean validarParaGuardar(Usuario entidad) {
-        return false;
+    public void actualizar(Usuario entidad) {
+
     }
 
-    @Override
-    public boolean validarParaEliminar(Usuario entidad) {
-        return false;
-    }
-
-    @Override
-    public boolean validarParaActualizar(Usuario entidad) {
-        return false;
-    }
     public Usuario buscarPorCorreo(String correo){
         return usuarioRepositorio.findByCorreo(correo);
     }
