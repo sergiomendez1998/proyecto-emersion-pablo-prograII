@@ -22,7 +22,11 @@ public class RolServiceImpl implements CrudService<Rol>{
 
     @Override
     public Rol buscarPorId(Long id) {
-        return rolRepositorio.findById(id).orElse(null);
+        return listarTodos()
+                .stream()
+                .filter(rol -> rol.getId().equals(id))
+                .findFirst()
+                .orElse(null);
     }
 
     @Override

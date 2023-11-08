@@ -1,7 +1,6 @@
 package com.example.proyectofinalprograiimvc.controllers;
 
-import com.example.proyectofinalprograiimvc.servicios.ItemServiceImpl;
-import com.example.proyectofinalprograiimvc.servicios.RolServiceImpl;
+import com.example.proyectofinalprograiimvc.servicios.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,7 +18,17 @@ public class HomeController {
     @Autowired
     private RolServiceImpl rolService;
 
-    
+    @Autowired
+    private EstadoServiceImpl estadoService;
+
+    @Autowired
+    private TipoExamenServiceImpl tipoExamenService;
+
+    @Autowired
+    private TipoMuestraServiceImpl tipoMuestraService;
+
+    @Autowired
+    private UnidadMedidaServiceImpl unidadMedidaService;
 
     @GetMapping("/")
     public String Login(){
@@ -31,5 +40,9 @@ public class HomeController {
     public void defaultAttribute(Model model){
         model.addAttribute("items", itemService.listarTodos());
         model.addAttribute("roles", rolService.listarTodos());
+        model.addAttribute("estados", estadoService.listarTodos());
+        model.addAttribute("tipoExamenes", tipoExamenService.listarTodos());
+        model.addAttribute("tipoMuestras", tipoMuestraService.listarTodos());
+        model.addAttribute("unidadMedidas", unidadMedidaService.listarTodos());
     }
 }

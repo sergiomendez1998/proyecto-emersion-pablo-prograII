@@ -1,36 +1,34 @@
 package com.example.proyectofinalprograiimvc.servicios;
 
-import com.example.proyectofinalprograiimvc.modelo.Item;
-import com.example.proyectofinalprograiimvc.repositorio.ItemRepositorio;
+import com.example.proyectofinalprograiimvc.modelo.UnidadMedida;
+import com.example.proyectofinalprograiimvc.repositorio.UnidadMedidaRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
 @Service
-public class ItemServiceImpl implements CrudService<Item>{
-
+public class UnidadMedidaServiceImpl implements CrudService<UnidadMedida>{
     @Autowired
-    private  ItemRepositorio itemRepositorio;
+    private UnidadMedidaRepositorio unidadMedidaRepositorio;
 
-    @Cacheable("items")
+    @Cacheable ("unidadMedidas")
     @Override
-    public List<Item> listarTodos() {
-        return itemRepositorio.findAll();
+    public List<UnidadMedida> listarTodos() {
+        return unidadMedidaRepositorio.findAll();
     }
 
     @Override
-    public Item buscarPorId(Long id) {
+    public UnidadMedida buscarPorId(Long id) {
         return listarTodos()
                 .stream()
-                .filter(item -> item.getId().equals(id))
+                .filter(unidadMedida -> unidadMedida.getId().equals(id))
                 .findFirst()
                 .orElse(null);
     }
 
     @Override
-    public Item guardar(Item entidad) {
+    public UnidadMedida guardar(UnidadMedida entidad) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -40,8 +38,7 @@ public class ItemServiceImpl implements CrudService<Item>{
     }
 
     @Override
-    public void actualizar(Item entidad) {
+    public void actualizar(UnidadMedida entidad) {
 
     }
-
 }
