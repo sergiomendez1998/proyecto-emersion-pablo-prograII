@@ -43,6 +43,6 @@ public class HomeController {
         model.addAttribute("estados", estadoService.listarTodos());
         model.addAttribute("tipoExamenes", tipoExamenService.listarTodos());
         model.addAttribute("tipoMuestras", tipoMuestraService.listarTodos());
-        model.addAttribute("unidadMedidas", unidadMedidaService.listarTodos());
+        //model.addAttribute("unidadMedidas", unidadMedidaService.listarTodos());
     }
 }

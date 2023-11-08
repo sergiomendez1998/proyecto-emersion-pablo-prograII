@@ -2,6 +2,7 @@
     <title>Registro</title>
 </head>
 <body th:replace="~{Shared/LayoutNoAuth::common_layout(~{::main})}">
+
 <main class="container">
     <h1 class="text-center fw-bold">Registro Clientes</h1>
 
@@ -65,9 +66,15 @@
             <div class="error-message" th:if="${#fields.hasErrors('usuario.contrasenia')}" th:errors="*{usuario.contrasenia}"></div>
         </div>
 
-        <div class="col-12">
+        <div class="col-12 text-center">
             <button type="submit" class="btn btn-primary">Registrarme</button>
         </div>
+
+
+
     </form>
+    <div class="text-center">
+    <a th:href="@{/login}" class="link-danger">¿Tienes cuenta? Login Aquí</a>
+    </div>
 </main>
 </body>
