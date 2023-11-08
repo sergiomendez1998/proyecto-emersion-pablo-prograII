@@ -1,9 +1,34 @@
-<head th:replace="~{Shared/Layout::common_head(~{::title})}">
+<head th:replace="~{Shared/Layout::common_head(~{::title}, ~{::link})}">
     <title>Home</title>
+    <link rel="stylesheet" th:href="@{/CSS/tabulator.min.css}">
 </head>
 
-<body th:replace="~{Shared/Layout::common_layout(~{::section})}">
-   <section>
-       <h1 class="text-center fw-bold">Pagina de Inicio</h1>
+<body th:replace="~{Shared/Layout::common_layout(~{::section}, ~{::script})}">
+   <section class="container">
+       <h1 class="text-center fw-bold">Catálogos</h1>
+       <div class="cart">
+           <table id="table_items" class="m-3 table-light table-hover">
+               <thead>
+               <tr>
+                   <th>ID</th>
+                   <th>NOMBRE</th>
+                   <th>DESCRIPCIÓN</th>
+                   <th>FECHA</th>
+                   <th>FECHA ACTUAL</th>
+               </tr>
+               </thead>
+               <tbody>
+               <tr th:each="item : ${items}">
+                   <td th:text="${item.getId()}"></td>
+                   <td th:text="${item.getNombre()}"></td>
+                   <td th:text="${item.getDescripcion()}"></td>
+                   <td th:text="${item.getFechaCreacion()}"></td>
+                   <td th:text="${item.getFechaActualizacion()}"></td>
+               </tr>
+               </tbody>
+           </table>
+       </div>
    </section>
+    <script th:src="@{/JS/tabulator.min.js}"></script>
+    <script th:src="@{/JS/catalogs.js}"></script>
 </body>
