@@ -19,6 +19,8 @@ public class HomeController {
     @Autowired
     private RolServiceImpl rolService;
 
+    
+
     @GetMapping("/")
     public String Login(){
         log.info("Ejecutando el controlador Spring MVC");
