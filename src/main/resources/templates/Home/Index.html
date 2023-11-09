@@ -27,6 +27,92 @@
                </tr>
                </tbody>
            </table>
+
+           <table id="table_items2" class="m-3 table-light table-hover">
+               <thead>
+               <tr>
+                   <th>ID</th>
+                   <th>NOMBRE</th>
+                   <th>DESCRIPCIÓN</th>
+                   <th>FECHA</th>
+                   <th>FECHA ACTUAL</th>
+               </tr>
+               </thead>
+               <tbody>
+               <tr th:each="roles : ${roles}">
+                   <td th:text="${roles.getId()}"></td>
+                   <td th:text="${roles.getNombre()}"></td>
+                   <td th:text="${roles.getDescripcion()}"></td>
+                   <td th:text="${roles.getFechaCreacion()}"></td>
+                   <td th:text="${roles.getFechaActualizacion()}"></td>
+               </tr>
+               </tbody>
+           </table>
+
+           <table id="table_items3" class="m-3 table-light table-hover">
+               <thead>
+               <tr>
+                   <th>ID</th>
+                   <th>NOMBRE</th>
+                   <th>DESCRIPCIÓN</th>
+                   <th>FECHA</th>
+                   <th>FECHA ACTUAL</th>
+               </tr>
+               </thead>
+               <tbody>
+               <tr th:each="estados : ${estados}">
+                   <td th:text="${estados.getId()}"></td>
+                   <td th:text="${estados.getNombre()}"></td>
+                   <td th:text="${estados.getDescripcion()}"></td>
+                   <td th:text="${estados.getFechaCreacion()}"></td>
+                   <td th:text="${estados.getFechaActualizacion()}"></td>
+               </tr>
+               </tbody>
+           </table>
+
+
+           <table id="table_items4" class="m-3 table-light table-hover">
+               <thead>
+               <tr>
+                   <th>ID</th>
+                   <th>NOMBRE</th>
+                   <th>DESCRIPCIÓN</th>
+                   <th>FECHA</th>
+                   <th>FECHA MODIFICADA</th>
+               </tr>
+               </thead>
+               <tbody>
+               <tr th:each="tipos_examen : ${tipoExamenes}">
+                   <td th:text="${tipos_examen.getId()}"></td>
+                   <td th:text="${tipos_examen.getNombre()}"></td>
+                   <td th:text="${tipos_examen.getDescripcion()}"></td>
+                   <td th:text="${tipos_examen.getFechaCreacion()}"></td>
+                   <td th:text="${tipos_examen.getFechaModificacion()}"></td>
+               </tr>
+               </tbody>
+           </table>
+
+           <table id="table_items5" class="m-3 table-light table-hover">
+               <thead>
+               <tr>
+                   <th>ID</th>
+                   <th>NOMBRE</th>
+                   <th>DESCRIPCIÓN</th>
+                   <th>FECHA</th>
+                   <th>FECHA ACTUAL</th>
+               </tr>
+               </thead>
+               <tbody>
+               <tr th:each="tipos_muestra : ${tipoMuestras}">
+                   <td th:text="${tipos_muestra.getId()}"></td>
+                   <td th:text="${tipos_muestra.getNombre()}"></td>
+                   <td th:text="${tipos_muestra.getDescripcion()}"></td>
+                   <td th:text="${tipos_muestra.getFechaCreacion()}"></td>
+                   <td th:text="${tipos_muestra.getFechaActualizacion()}"></td>
+               </tr>
+               </tbody>
+           </table>
+
        </div>
    </section>
     <script th:src="@{/JS/tabulator.min.js}"></script>
