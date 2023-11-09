@@ -6,6 +6,17 @@
 <body th:replace="~{Shared/Layout::common_layout(~{::section}, ~{::script})}">
    <section class="container">
        <h1 class="text-center fw-bold">Catálogos</h1>
+       <div class="col-12 col-md-6 px-2 py-3">
+       <select class="form-select" aria-label="Default select example" id="select_Catalogos">
+           <option selected>Seleccione el catálogo</option>
+           <option value="table_items">Catálogo Items</option>
+           <option value="table_items2">Catálogo Roles</option>
+           <option value="table_items3">Catálogo Estados</option>
+           <option value="table_items4">Catálogo Examenes</option>
+           <option value="table_items5">Catálogo Muestras</option>
+           <option value="table_items6">Catálogo Unidades de Medidas</option>
+       </select>
+       </div>
        <div class="cart">
            <table id="table_items" class="m-3 table-light table-hover">
                <thead>
@@ -28,7 +39,7 @@
                </tbody>
            </table>
 
-           <table id="table_items2" class="m-3 table-light table-hover">
+           <table id="table_items2" class="m-3 table-light table-hover d-none">
                <thead>
                <tr>
                    <th>ID</th>
@@ -49,7 +60,7 @@
                </tbody>
            </table>
 
-           <table id="table_items3" class="m-3 table-light table-hover">
+           <table id="table_items3" class="m-3 table-light table-hover d-none">
                <thead>
                <tr>
                    <th>ID</th>
@@ -71,7 +82,7 @@
            </table>
 
 
-           <table id="table_items4" class="m-3 table-light table-hover">
+           <table id="table_items4" class="m-3 table-light table-hover d-none">
                <thead>
                <tr>
                    <th>ID</th>
@@ -92,7 +103,7 @@
                </tbody>
            </table>
 
-           <table id="table_items5" class="m-3 table-light table-hover">
+           <table id="table_items5" class="m-3 table-light table-hover d-none">
                <thead>
                <tr>
                    <th>ID</th>
@@ -109,6 +120,28 @@
                    <td th:text="${tipos_muestra.getDescripcion()}"></td>
                    <td th:text="${tipos_muestra.getFechaCreacion()}"></td>
                    <td th:text="${tipos_muestra.getFechaActualizacion()}"></td>
+               </tr>
+               </tbody>
+           </table>
+
+
+           <table id="table_items6" class="m-3 table-light table-hover d-none">
+               <thead>
+               <tr>
+                   <th>ID</th>
+                   <th>NOMBRE</th>
+                   <th>DESCRIPCIÓN</th>
+                   <th>FECHA</th>
+                   <th>FECHA MODIFICADA</th>
+               </tr>
+               </thead>
+               <tbody>
+               <tr th:each="unidades_medida : ${unidadMedidas}">
+                   <td th:text="${unidades_medida.getId()}"></td>
+                   <td th:text="${unidades_medida.getNombre()}"></td>
+                   <td th:text="${unidades_medida.getDescripcion()}"></td>
+                   <td th:text="${unidades_medida.getFechaCreacion()}"></td>
+                   <td th:text="${unidades_medida.getFechaModificacion()}"></td>
                </tr>
                </tbody>
            </table>
