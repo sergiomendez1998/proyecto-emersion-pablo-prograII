@@ -35,4 +35,8 @@ public class DetalleSolicitud {
     @OneToMany (mappedBy = "detalleSolicitud")
     private List<ItemMuestra> itemMuestraList = new ArrayList<>();
 
+    @PrePersist
+    public void prePersist(){
+        fechaCreacion = LocalDateTime.now();
+    }
 }

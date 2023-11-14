@@ -48,4 +48,11 @@ public class UserDetailsImpl implements UserDetails {
     public boolean isEnabled() {
         return usuario.isHabilitado();
     }
+
+    public String getTipoUsuario(){
+        return usuario.getTipoUsuario();
+    }
+    public Long getId(){
+        return usuario.getId();
+    }
 }

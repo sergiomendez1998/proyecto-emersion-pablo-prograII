@@ -22,7 +22,8 @@ public class Utils {
         return String.format("%04d-%02d-%02d-%02d-%07d", firstGroup, secondGroup, thirdGroup, fourthGroup, fifthGroup);
     }
 
-    public static String generarNumeroSolicitudRandom(Date dateOfReception, String tipoUsuario) {
+    public static String generarNumeroSolicitudRandom(String tipoUsuario) {
+        Date dateOfReception = new Date();
         Random random = new Random();
         String letters = tipoUsuario.equalsIgnoreCase("externo") ? "EX" : "IN";
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");

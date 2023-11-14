@@ -1,6 +1,7 @@
 package com.example.proyectofinalprograiimvc.controllers;
 
 import com.example.proyectofinalprograiimvc.servicios.*;
+import jakarta.annotation.security.RolesAllowed;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,7 +31,11 @@ public class HomeController {
     @Autowired
     private UnidadMedidaServiceImpl unidadMedidaService;
 
+    @Autowired
+    private TipoSoporteServiceImpl tipoSoporteService;
+
     @GetMapping("/")
+    @RolesAllowed({"ROLE_ADMIN"})
     public String Login(){
         log.info("Ejecutando el controlador Spring MVC");
         return "Home/Index";
@@ -44,5 +49,6 @@ public class HomeController {
         model.addAttribute("tipoExamenes", tipoExamenService.listarTodos());
         model.addAttribute("tipoMuestras", tipoMuestraService.listarTodos());
         model.addAttribute("unidadMedidas", unidadMedidaService.listarTodos());
+        model.addAttribute("tipoSoportes", tipoSoporteService.listarTodos());
     }
 }
