@@ -32,4 +32,13 @@ public class Utils {
         return String.format("%s-%s-%05d", letters, date, numbers);
     }
 
+    public static String generarNumeroMuestraRandom() {
+        Date dateOfReception = new Date();
+        Random random = new Random();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+        String date = dateFormat.format(dateOfReception);
+        int numbers = random.nextInt(100000);
+        return String.format("%s-%05d", date, numbers);
+    }
+
 }

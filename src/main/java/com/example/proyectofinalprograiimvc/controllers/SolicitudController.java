@@ -59,6 +59,10 @@ public class SolicitudController {
 
          Usuario usuarioLogueado = usuarioService.buscarPorCorreo(user.getUsername());
 
+       if (bindingResult.hasErrors()) {
+           return "redirect:/";
+       }
+
          Solicitud nuevaSolicitud = new Solicitud();
 
          nuevaSolicitud.setCodigoSolicitud(Utils.generarNumeroSolicitudRandom(usuarioLogueado.getTipoUsuario()));
@@ -72,9 +76,6 @@ public class SolicitudController {
            nuevaSolicitud.setCliente(clienteService.buscarPorId(solicitudDTO.getClienteId()));
         }
 
-       if (bindingResult.hasErrors()) {
-           return "redirect:/";
-       }
         solicitudService.guardar(nuevaSolicitud);
 
         solicitudDTO.getItems().forEach(item -> {
