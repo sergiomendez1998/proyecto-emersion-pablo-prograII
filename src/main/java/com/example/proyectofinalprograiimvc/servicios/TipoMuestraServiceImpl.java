@@ -22,7 +22,11 @@ public class TipoMuestraServiceImpl implements CrudService<TipoMuestra>{
 
     @Override
     public TipoMuestra buscarPorId(Long id) {
-        throw new UnsupportedOperationException("Not supported yet.");
+       return listarTodos()
+               .stream()
+               .filter(tipoMuestra -> tipoMuestra.getId().equals(id))
+               .findFirst()
+               .orElse(null);
     }
 
     @Override
