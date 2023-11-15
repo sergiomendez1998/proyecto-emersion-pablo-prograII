@@ -6,17 +6,23 @@ import com.example.proyectofinalprograiimvc.modelo.DetalleSolicitud;
 import com.example.proyectofinalprograiimvc.modelo.Solicitud;
 import com.example.proyectofinalprograiimvc.modelo.Usuario;
 import com.example.proyectofinalprograiimvc.servicios.*;
+import jakarta.jws.soap.SOAPBinding;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import java.security.Principal;
 
 @Controller
 public class SolicitudController {
+
+    @Autowired
+    private TipoExamenServiceImpl tipoExamenService;
 
    @Autowired
    private SolicitudServiceImpl solicitudService;
@@ -36,8 +42,20 @@ public class SolicitudController {
    @Autowired
    private DetalleSolicitudServiceImpl detalleSolicitudService;
 
+    @GetMapping("/Solicitud")
+    public String SolicitudIn(Principal principal,SolicitudDTO solicitudDTO){
+        Usuario usuarioLogueado = usuarioService.buscarPorCorreo(principal.getName());
+        return usuarioLogueado.getTipoUsuario().equals("interno")? "Solicitud/Interna":"Solicitud/Externa";
+    }
+
+    @ModelAttribute
+    public void defaultAttribute(Model model){
+        model.addAttribute("items", itemService.listarTodos());
+        model.addAttribute("tipoExamenes", tipoExamenService.listarTodos());
+        model.addAttribute("tipoSoportes", tipoSoporteService.listarTodos());
+    }
    @PostMapping("/guardarSolicitud")
-    public String guardarSolicitud(SolicitudDTO solicitudDTO, @AuthenticationPrincipal User user, RedirectAttributes redirect){
+    public String guardarSolicitud(@Valid SolicitudDTO solicitudDTO, BindingResult bindingResult, @AuthenticationPrincipal User user, RedirectAttributes redirect){
 
          Usuario usuarioLogueado = usuarioService.buscarPorCorreo(user.getUsername());
 
@@ -54,6 +72,9 @@ public class SolicitudController {
            nuevaSolicitud.setCliente(clienteService.buscarPorId(solicitudDTO.getClienteId()));
         }
 
+       if (bindingResult.hasErrors()) {
+           return "redirect:/";
+       }
         solicitudService.guardar(nuevaSolicitud);
 
         solicitudDTO.getItems().forEach(item -> {

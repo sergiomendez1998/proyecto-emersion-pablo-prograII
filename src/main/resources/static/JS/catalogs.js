@@ -52,6 +52,7 @@ const CONFIG_TABLE = {
 
 document.addEventListener("DOMContentLoaded", ()=> {
     const select = document.querySelector("#select_Catalogos");
+//se crean las etiquetas option para los catalogos
 
     const select_items = TABLE_VALUES.map(t=>{
         const option = document.createElement("option");
@@ -60,8 +61,11 @@ document.addEventListener("DOMContentLoaded", ()=> {
         option.selected = t.selected;
         return option;
     });
+//renderiza los elementos creados anteriormente
 
     select.append(...select_items);
+
+    //tabla
 
     new Tabulator("#table_items", CONFIG_TABLE);
 
@@ -74,6 +78,8 @@ document.addEventListener("DOMContentLoaded", ()=> {
     new Tabulator("#table_items5", CONFIG_TABLE);
 
     new Tabulator("#table_items6", CONFIG_TABLE);
+
+    //evento de select, cambiar de tablas.
 
     select.addEventListener("input", (e)=>{
         const selected = e.target.value;
