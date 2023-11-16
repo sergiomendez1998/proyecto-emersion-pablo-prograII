@@ -14,11 +14,11 @@ public class MuestraDTO {
     @NotEmpty(message = "La cantidad es requerida")
     private int cantidad;
     @NotEmpty(message = "Es obligatorio el tipo de muestra")
-    private Long id_tipo_muestra;
+    private Long idTipoMuestra;
     @NotEmpty(message = "Es obligatorio la unidad de medida")
-    private Long id_unidad_medida;
+    private Long idUnidadMedida;
     @NotEmpty(message = "Es obligatorio fecha de vencimiento")
-    private Date fecha_vencimiento;
+    private Date fechaVencimiento;
     @NotEmpty(message = "Es obligatoria la solicitud")
-    private Long solicidud_id;
+    private Long solicidudId;
 }

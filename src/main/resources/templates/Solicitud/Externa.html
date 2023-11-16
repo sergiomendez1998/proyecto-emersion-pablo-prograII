@@ -3,7 +3,84 @@
 </head>
 <body th:replace="~{Shared/Layout::common_layout(~{::section}, ~{})}">
 <section class="container">
-    <h1>Creación de Solicitud Externa</h1>
+    <h1 class="text-center fs-4">Creacion de Solicitudes externas</h1>
+    <form id="signUpForm" action="#!" class="row g-3 was-validated">
+        <!-- start step indicators -->
+        <div class="form-header d-flex mb-4">
+            <span class="stepIndicator">Informacion General</span>
+            <span class="stepIndicator">Soporte</span>
+            <span class="stepIndicator">Detalle</span>
+        </div>
+        <!-- end step indicators -->
+
+        <!-- step one -->
+        <div class="step">
+            <p class="text-center mb-4">Informacion General</p>
+
+                    <div class="col-md-4">
+                        <label for="genero" class="form-label">Tipo Solicitud</label>
+                        <select id="genero" class="form-select"    required>
+                            <option value="" selected>Seleccionar...</option>
+                            <option value="Masculino">Masculino</option>
+                            <option value="Femenino">Femenino</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </div>
+
+                <div class="col-md-4">
+                    <label for="item" class="form-label">Tipo Examen</label>
+                    <select id="item" class="form-select"    required>
+                        <option value="" selected>Seleccionar...</option>
+                        <option value="Masculino">Masculino</option>
+                        <option value="Femenino">Femenino</option>
+                        <option value="Otro">Otro</option>
+                    </select>
+                </div>
+
+            <div class="mb-3">
+                <label for="exampleFormControlTextarea1">Descripcion</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" required></textarea>
+            </div>
+        </div>
+
+        <!-- step two -->
+        <div class="step">
+            <p class="text-center mb-4">Ingresa los datos de soporte</p>
+            <div class="mb-3">
+                <div class="mb-4">
+                    <div class="col-md-4">
+                        <label for="soporte" class="form-label">Tipo Soporte</label>
+                        <select id="soporte" class="form-select"    required>
+                            <option value="" selected>Seleccionar...</option>
+                            <option value="Masculino">Masculino</option>
+                            <option value="Femenino">Femenino</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="email" placeholder="email" oninput="this.className = ''">
+            </div>
+            <div class="mb-3">
+                <label for="telefono" class="form-label">Telefono</label>
+                <input type="text" id="telefono" placeholder="telefono" oninput="this.className = ''" name="telefono">
+            </div>
+        </div>
+
+        <!-- step three -->
+        <div class="step">
+            <p class="text-center mb-4">Breve detalle</p>
+        </div>
+
+        <!-- start previous / next buttons -->
+        <div class="form-footer d-flex">
+            <button type="button" id="prevBtn" onclick="nextPrev(-1)">Anterior</button>
+            <button type="button" id="nextBtn" onclick="nextPrev(1)">Siguiente</button>
+        </div>
+        <!-- end previous / next buttons -->
+    </form>
 
 </section>
 

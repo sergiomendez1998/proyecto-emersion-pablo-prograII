@@ -2,18 +2,16 @@ package com.example.proyectofinalprograiimvc.controllers;
 
 
 import com.example.proyectofinalprograiimvc.dto.MuestraDTO;
-import com.example.proyectofinalprograiimvc.dto.SolicitudDTO;
 import com.example.proyectofinalprograiimvc.modelo.Muestra;
 import com.example.proyectofinalprograiimvc.modelo.TipoMuestra;
 import com.example.proyectofinalprograiimvc.modelo.UnidadMedida;
 import com.example.proyectofinalprograiimvc.servicios.*;
-import com.example.proyectofinalprograiimvc.modelo.Usuario;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -32,14 +30,9 @@ public class MuestraController {
     @Autowired
     private TipoMuestraServiceImpl tipoMuestraService;
 
-    @Autowired
-    private UsuarioServiceImpl usuarioService;
-
 
     @PostMapping("/guardarMuestra")
-    public String guardarMuestra(@Valid MuestraDTO muestraDTO, BindingResult bindingResult, @AuthenticationPrincipal User user, RedirectAttributes redirect){
-
-        Usuario usuarioLogueado = usuarioService.buscarPorCorreo(user.getUsername());
+    public String guardarMuestra(@Valid MuestraDTO muestraDTO, BindingResult bindingResult, RedirectAttributes redirect){
 
         if (bindingResult.hasErrors()) {
             return "redirect:/";
@@ -49,16 +42,31 @@ public class MuestraController {
 
         nuevaMuestra.setPresentacion(muestraDTO.getPresentacion());
         nuevaMuestra.setCantidad(muestraDTO.getCantidad());
-        TipoMuestra tipoMuestra = tipoMuestraService.buscarPorId(muestraDTO.getId_tipo_muestra());
+        TipoMuestra tipoMuestra = tipoMuestraService.buscarPorId(muestraDTO.getIdTipoMuestra());
         nuevaMuestra.setTipoMuestra(tipoMuestra);
-        UnidadMedida unidadMedida = unidadMedidaService.buscarPorId(muestraDTO.getId_unidad_medida());
+        UnidadMedida unidadMedida = unidadMedidaService.buscarPorId(muestraDTO.getIdUnidadMedida());
         nuevaMuestra.setUnidadMedida(unidadMedida);
-        nuevaMuestra.setFechaVencimiento(muestraDTO.getFecha_vencimiento());
-        nuevaMuestra.setSolicitud(solicitudService.buscarPorId(muestraDTO.getSolicidud_id()));
+        nuevaMuestra.setFechaVencimiento(muestraDTO.getFechaVencimiento());
+        nuevaMuestra.setSolicitud(solicitudService.buscarPorId(muestraDTO.getSolicidudId()));
 
         muestraService.guardar(nuevaMuestra);
 
         return "redirect:/";
+    }
+
+    @DeleteMapping("/eliminarMuestra/{id}")
+    public String eliminarMuestra(@PathVariable Long id, RedirectAttributes redirect){
+           Muestra muestra = muestraService.buscarPorId(id);
+           muestra.setEliminado(true);
+
+           muestra.getItemMuestraList().forEach(itemMuestra -> {
+               itemMuestra.setEliminado(true);
+               itemMuestra.getDetalleSolicitud().setAsociado(false);
+           });
+
+           muestraService.guardar(muestra);
+           redirect.addFlashAttribute("mensaje", "Muestra eliminada correctamente");
+          return "redirect:/";
     }
 
 }
