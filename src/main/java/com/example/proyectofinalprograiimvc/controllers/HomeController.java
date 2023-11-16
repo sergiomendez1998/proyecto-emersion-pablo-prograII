@@ -1,5 +1,6 @@
 package com.example.proyectofinalprograiimvc.controllers;
 
+import com.example.proyectofinalprograiimvc.modelo.Item;
 import com.example.proyectofinalprograiimvc.servicios.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @Slf4j
@@ -36,6 +41,8 @@ public class HomeController {
     @Autowired
     private SolicitudServiceImpl solicitudService;
 
+    private Map<String, List<Item>> map = new HashMap<>();
+
     @GetMapping("/")
     public String Login(){
         return "Home/Index";
@@ -51,5 +58,9 @@ public class HomeController {
         model.addAttribute("unidadMedidas", unidadMedidaService.listarTodos());
         model.addAttribute("tipoSoportes", tipoSoporteService.listarTodos());
         model.addAttribute("solicitudes", solicitudService.listarTodos());
+        tipoExamenService.listarTodos().forEach(tipoExamen -> {
+            map.put(tipoExamen.getNombre(), itemService.listarTodos().stream().filter(x -> x.getTipoExamen().getId().equals(tipoExamen.getId())).toList());
+        });
+        model.addAttribute("itemsAgrupadosPorTipoExamen", map);
     }
 }
