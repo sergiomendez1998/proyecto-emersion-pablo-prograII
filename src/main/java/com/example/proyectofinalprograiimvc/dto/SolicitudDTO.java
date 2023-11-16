@@ -14,7 +14,7 @@ import java.util.List;
 @Setter
 public class SolicitudDTO {
     @NotEmpty (message = "El correo es requerido")
-    @Email (message = "El corre es inválido")
+    @Email (message = "El correo es inválido")
     private String correo;
     @NotEmpty(message = "El número de soporte es requerido")
     private String numeroSoporte;

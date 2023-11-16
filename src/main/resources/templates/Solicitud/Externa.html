@@ -20,7 +20,7 @@
 
                     <div class="col-md-4">
                         <label for="genero" class="form-label">Tipo Solicitud</label>
-                        <select id="genero" class="form-select"    required>
+                        <select id="genero" name="genero" class="form-select step_0"    required>
                             <option value="" selected>Seleccionar...</option>
                             <option value="Masculino">Masculino</option>
                             <option value="Femenino">Femenino</option>
@@ -30,7 +30,7 @@
 
                 <div class="col-md-4">
                     <label for="item" class="form-label">Tipo Examen</label>
-                    <select id="item" class="form-select"    required>
+                    <select id="item" name="item" class="form-select step_0"    required>
                         <option value="" selected>Seleccionar...</option>
                         <option value="Masculino">Masculino</option>
                         <option value="Femenino">Femenino</option>
@@ -39,8 +39,8 @@
                 </div>
 
             <div class="mb-3">
-                <label for="exampleFormControlTextarea1">Descripcion</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" required></textarea>
+                <label for="observations">Descripcion</label>
+                <textarea class="form-control step_0" id="observations" name="observations" rows="3" required></textarea>
             </div>
         </div>
 
@@ -51,7 +51,7 @@
                 <div class="mb-4">
                     <div class="col-md-4">
                         <label for="soporte" class="form-label">Tipo Soporte</label>
-                        <select id="soporte" class="form-select"    required>
+                        <select id="soporte" name="soporte" class="form-select step_1"    required>
                             <option value="" selected>Seleccionar...</option>
                             <option value="Masculino">Masculino</option>
                             <option value="Femenino">Femenino</option>
@@ -62,11 +62,11 @@
             </div>
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" id="email" placeholder="email" oninput="this.className = ''">
+                <input type="email" id="email" class="form-control step_1" name="email" placeholder="email" oninput="this.className = ''">
             </div>
             <div class="mb-3">
                 <label for="telefono" class="form-label">Telefono</label>
-                <input type="text" id="telefono" placeholder="telefono" oninput="this.className = ''" name="telefono">
+                <input type="text" id="telefono" class="form-control step_1" placeholder="telefono" oninput="this.className = ''" name="telefono">
             </div>
         </div>
 

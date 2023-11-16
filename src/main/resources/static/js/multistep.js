@@ -32,31 +32,35 @@ function nextPrev(n) {
     // if you have reached the end of the form...
     if (currentTab >= x.length) {
         // ... the form gets submitted:
-        document.getElementById("signUpForm").submit();
+       const form = document.getElementById("signUpForm");
+       const data = new FormData();
+       data.forEach((valor, clave) => {
+           console.log({clave, valor});
+       });
         return false;
     }
     // Otherwise, display the correct tab:
     showTab(currentTab);
 }
 
-function validateForm() {
+function validateForm(form) {
     // This function deals with validation of the form fields
     var x, y, i, valid = true;
     x = document.getElementsByClassName("step");
-    y = x[currentTab].getElementsByTagName("input");
+    y = x[currentTab].getElementsByClassName(`step_${currentTab}`);
     // A loop that checks every input field in the current tab:
     for (i = 0; i < y.length; i++) {
         // If a field is empty...
         if (y[i].value == "") {
             // add an "invalid" class to the field:
-            y[i].className += " invalid";
+            y[i].classList.add("invalid");
             // and set the current valid status to false
             valid = false;
         }
     }
     // If the valid status is true, mark the step as finished and valid:
     if (valid) {
-        document.getElementsByClassName("stepIndicator")[currentTab].className += " finish";
+        document.getElementsByClassName("stepIndicator")[currentTab].classList.add("finish");
     }
     return valid; // return the valid status
 }
