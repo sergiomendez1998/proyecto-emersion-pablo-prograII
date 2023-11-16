@@ -1,7 +1,8 @@
-<head th:replace="~{Shared/Layout::common_head(~{::title}, ~{})}">
+<head th:replace="~{Shared/Layout::common_head(~{::title}, ~{::link})}">
+    <link rel="stylesheet" th:href="@{/css/multistep.css}">
     <title>Home</title>
 </head>
-<body th:replace="~{Shared/Layout::common_layout(~{::section}, ~{})}">
+<body th:replace="~{Shared/Layout::common_layout(~{::section}, ~{::script})}">
 <section class="container">
     <h1 class="text-center fs-4">Creacion de Solicitudes externas</h1>
     <form id="signUpForm" action="#!" class="row g-3 was-validated">
@@ -83,5 +84,5 @@
     </form>
 
 </section>
-
+<script th:src="@{/js/multistep.js}"></script>
 </body>
