@@ -41,8 +41,6 @@ public class HomeController {
     @Autowired
     private SolicitudServiceImpl solicitudService;
 
-    private Map<String, List<Item>> map = new HashMap<>();
-
     @GetMapping("/")
     public String Login(){
         return "Home/Index";
@@ -58,9 +56,5 @@ public class HomeController {
         model.addAttribute("unidadMedidas", unidadMedidaService.listarTodos());
         model.addAttribute("tipoSoportes", tipoSoporteService.listarTodos());
         model.addAttribute("solicitudes", solicitudService.listarTodos());
-        tipoExamenService.listarTodos().forEach(tipoExamen -> {
-            map.put(tipoExamen.getNombre(), itemService.listarTodos().stream().filter(x -> x.getTipoExamen().getId().equals(tipoExamen.getId())).toList());
-        });
-        model.addAttribute("itemsAgrupadosPorTipoExamen", map);
     }
 }

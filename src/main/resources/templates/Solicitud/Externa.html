@@ -5,7 +5,7 @@
 <body th:replace="~{Shared/Layout::common_layout(~{::section}, ~{::script})}">
 <section class="container">
     <h1 class="text-center fs-4">Creacion de Solicitudes externas</h1>
-    <form id="signUpForm" action="#!" class="row g-3 was-validated">
+    <form id="signUpForm" action="/procesar" method="post" class="row g-3 was-validated">
         <!-- start step indicators -->
         <div class="form-header d-flex mb-4">
             <span class="stepIndicator">Informacion General</span>
@@ -18,25 +18,21 @@
         <div class="step">
             <p class="text-center mb-4">Informacion General</p>
 
-                    <div class="col-md-4">
-                        <label for="genero" class="form-label">Tipo Solicitud</label>
-                        <select id="genero" name="genero" class="form-select step_0"    required>
-                            <option value="" selected>Seleccionar...</option>
-                            <option value="Masculino">Masculino</option>
-                            <option value="Femenino">Femenino</option>
-                            <option value="Otro">Otro</option>
-                        </select>
-                    </div>
-
-                <div class="col-md-4">
-                    <label for="item" class="form-label">Tipo Examen</label>
-                    <select id="item" name="item" class="form-select step_0"    required>
-                        <option value="" selected>Seleccionar...</option>
-                        <option value="Masculino">Masculino</option>
-                        <option value="Femenino">Femenino</option>
-                        <option value="Otro">Otro</option>
-                    </select>
+            <section class="row row-cols-1 row-cols-md-2 g-4 justify-content-center" th:each="result : ${itemsAgrupadosPorTipoExamen}">
+                <div class="col">
+                    <article class="card">
+                        <p class="card-header" th:text="${result.getKey()}">Nombre del tipo examen</p>
+                        <div class="card-body">
+                            <div class="form-check"  th:each="item : ${result.getValue()}">
+                                <input class="form-check-input step_0" type="checkbox" name="detalles"  th:value="${item.getId()}" th:id="${item.getId()}">
+                                <label class="form-check-label" th:for="${item.getId()}">
+                                    <span th:text="${item.getNombre()}">Nombre del item</span>
+                                </label>
+                            </div>
+                        </div>
+                    </article>
                 </div>
+            </section>
 
             <div class="mb-3">
                 <label for="observations">Descripcion</label>
@@ -62,11 +58,11 @@
             </div>
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" id="email" class="form-control step_1" name="email" placeholder="email" oninput="this.className = ''">
+                <input type="email" id="email" class="form-control step_1" name="email" placeholder="email" required>
             </div>
             <div class="mb-3">
                 <label for="telefono" class="form-label">Telefono</label>
-                <input type="text" id="telefono" class="form-control step_1" placeholder="telefono" oninput="this.className = ''" name="telefono">
+                <input type="text" id="telefono" class="form-control step_1" placeholder="telefono" name="telefono" required>
             </div>
         </div>
 

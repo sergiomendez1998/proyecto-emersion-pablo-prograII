@@ -3,6 +3,7 @@ package com.example.proyectofinalprograiimvc.controllers;
 import com.example.proyectofinalprograiimvc.Utils;
 import com.example.proyectofinalprograiimvc.dto.SolicitudDTO;
 import com.example.proyectofinalprograiimvc.modelo.DetalleSolicitud;
+import com.example.proyectofinalprograiimvc.modelo.Item;
 import com.example.proyectofinalprograiimvc.modelo.Solicitud;
 import com.example.proyectofinalprograiimvc.modelo.Usuario;
 import com.example.proyectofinalprograiimvc.servicios.*;
@@ -11,9 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public class SolicitudController {
@@ -35,6 +41,11 @@ public class SolicitudController {
 
    @Autowired
    private DetalleSolicitudServiceImpl detalleSolicitudService;
+
+    @Autowired
+    private TipoExamenServiceImpl tipoExamenService;
+
+    private Map<String, List<Item>> map = new HashMap<>();
 
     @GetMapping("/Solicitud")
     public String SolicitudIn(SolicitudDTO solicitudDTO){
@@ -104,6 +115,28 @@ public class SolicitudController {
         solicitudService.actualizar(solicitudEncotrada);
         redirect.addFlashAttribute("mensaje", "Solicitud No: "+ solicitudEncotrada.getCodigoSolicitud()+ " eliminada exitosamente");
         return "redirect:/";
+    }
+
+    @PostMapping("/procesar")
+    public String procesarFormulario(@RequestParam(name = "detalles", required = false) List<String> detalles) {
+        // Realiza el procesamiento con los detalles recibidos
+        if (detalles != null) {
+            for (String detalle : detalles) {
+                // Realiza acciones con cada detalle
+                System.out.println("Detalle seleccionado: " + detalle);
+            }
+        }
+
+        // Puedes redirigir a otra página o devolver una respuesta según tus necesidades
+        return "redirect:/";
+    }
+
+    @ModelAttribute
+    public void defaultAttribute(Model model){
+        tipoExamenService.listarTodos().forEach(tipoExamen -> {
+            map.put(tipoExamen.getNombre(), itemService.listarTodos().stream().filter(x -> x.getTipoExamen().getId().equals(tipoExamen.getId())).toList());
+        });
+        model.addAttribute("itemsAgrupadosPorTipoExamen", map);
     }
 
 }
