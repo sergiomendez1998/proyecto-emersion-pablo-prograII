@@ -2,9 +2,8 @@ package com.example.proyectofinalprograiimvc.controllers;
 
 
 import com.example.proyectofinalprograiimvc.dto.MuestraDTO;
-import com.example.proyectofinalprograiimvc.modelo.Muestra;
-import com.example.proyectofinalprograiimvc.modelo.TipoMuestra;
-import com.example.proyectofinalprograiimvc.modelo.UnidadMedida;
+import com.example.proyectofinalprograiimvc.modelo.*;
+import com.example.proyectofinalprograiimvc.repositorio.ItemMuestraRepositorio;
 import com.example.proyectofinalprograiimvc.servicios.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -29,6 +29,12 @@ public class MuestraController {
 
     @Autowired
     private TipoMuestraServiceImpl tipoMuestraService;
+
+    @Autowired
+    private DetalleSolicitudServiceImpl detalleSolicitudService;
+
+    @Autowired
+    private ItemMuestraRepositorio itemMuestraRepositorio;
 
 
     @PostMapping("/guardarMuestra")
@@ -67,6 +73,42 @@ public class MuestraController {
            muestraService.guardar(muestra);
            redirect.addFlashAttribute("mensaje", "Muestra eliminada correctamente");
           return "redirect:/";
+    }
+
+    @PostMapping("/asociarItemMuestra/{muestraId}")
+    public String asociarItemMuestra(@PathVariable Long muestraId, Long solicitudDetalleId, RedirectAttributes redirect){
+
+        Muestra muestra = muestraService.buscarPorId(muestraId);
+        DetalleSolicitud detalleSolicitud = detalleSolicitudService.buscarPorId(solicitudDetalleId);
+
+        ItemMuestra itemMuestra = new ItemMuestra();
+        itemMuestra.setMuestra(muestra);
+        itemMuestra.setDetalleSolicitud(detalleSolicitud);
+
+         itemMuestraRepositorio.save(itemMuestra);
+
+         detalleSolicitud.setAsociado(true);
+
+         detalleSolicitudService.guardar(detalleSolicitud);
+
+        redirect.addFlashAttribute("mensaje", "Item asociado correctamente");
+        return "redirect:/";
+    }
+
+    @PutMapping("/desasociarItemMuestra/{muestraId}")
+    public String desasociarItemMuestra(@PathVariable Long muestraId, Long itemId, RedirectAttributes redirect){
+
+        Muestra muestra = muestraService.buscarPorId(muestraId);
+        muestra.getItemMuestraList().forEach(itemMuestra -> {
+            if (itemMuestra.getId().equals(itemId)) {
+                itemMuestra.setEliminado(true);
+                itemMuestra.getDetalleSolicitud().setAsociado(false);
+            }
+        });
+
+        muestraService.guardar(muestra);
+        redirect.addFlashAttribute("mensaje", "Item desasociado correctamente");
+        return "redirect:/";
     }
 
 }
