@@ -1,10 +1,92 @@
-<head th:replace="~{Shared/Layout::common_head(~{::title}, ~{})}">
+<head th:replace="~{Shared/Layout::common_head(~{::title}, ~{::link})}">
+    <link rel="stylesheet" th:href="@{/css/multistep.css}">
     <title>Home</title>
 </head>
-<body th:replace="~{Shared/Layout::common_layout(~{::section}, ~{})}">
+<body th:replace="~{Shared/Layout::common_layout(~{::section}, ~{::script})}">
 <section class="container">
-    <h1>Creación de Solicitud Interna</h1>
+    <h1 class="text-center fw-bold">Creacion de Solicitudes externas</h1>
+    <!-- Aquí puedes incluir tu estructura HTML existente -->
+
+    <div class="alert alert-success alert-dismissible fade show" th:if="${mensaje != null}" role="alert">
+        <p th:text="${mensaje}" class="fw-bold">mensaje de creacion de solicitud</p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <form id="signUpForm" action="#" th:action="@{/Solicitud}" method="post" th:object="${solicitudDTO}" class="row g-3 was-validated">
+        <!-- start step indicators -->
+        <div class="form-header d-flex mb-4">
+            <span class="stepIndicator">Informacion General</span>
+            <span class="stepIndicator">Soporte</span>
+            <span class="stepIndicator">Confirmacion</span>
+        </div>
+        <!-- end step indicators -->
+
+        <!-- step one -->
+        <div class="step">
+            <p class="text-center mb-4">Informacion General</p>
+
+            <section class="row row-cols-1 row-cols-md-2 g-4 justify-content-center" th:each="result : ${itemsAgrupadosPorTipoExamen}">
+                <div class="col">
+                    <article class="card">
+                        <p class="card-header" th:text="${result.getKey()}">Nombre del tipo examen</p>
+                        <div class="card-body">
+                            <div class="form-check"  th:each="item, itemStat : ${result.getValue()}">
+                                <input class="form-check-input step_0" type="checkbox" th:name="'items'+'['+${item.getId()-1}+'].id'" th:value="${item.getId()}" th:id="${item.getId()}">
+                                <label class="form-check-label" th:for="${item.getId()}">
+                                    <span th:text="${item.getNombre()}">Nombre del item</span>
+                                </label>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+            <span th:if="${#fields.hasErrors('items')}" th:errors="*{items}" class="text-danger"></span>
+
+            <div class="mb-3">
+                <label for="observacion">Descripcion</label>
+                <textarea class="form-control step_0" id="observacion" name="observacion" rows="3" th:field="*{observacion}" required></textarea>
+                <span th:if="${#fields.hasErrors('observacion')}" th:errors="*{observacion}" class="text-danger"></span>
+            </div>
+        </div>
+
+        <!-- step two -->
+        <div class="step">
+            <p class="text-center mb-4">Ingresa los datos de soporte</p>
+            <div class="mb-3">
+                <div class="col">
+                    <label for="tipoSoporteId" class="form-label">Tipo Soporte</label>
+                    <select id="tipoSoporteId" name="tipoSoporteId" class="form-select step_1" th:field="*{tipoSoporteId}" required>
+                        <option value="" selected>Seleccionar...</option>
+                        <option th:each="tipoSoporte : ${tipoSoportes}" th:value="${tipoSoporte.id}" th:text="${tipoSoporte.nombre+' - '+tipoSoporte.descripcion}"></option>
+                    </select>
+                    <span th:if="${#fields.hasErrors('tipoSoporteId')}" th:errors="*{tipoSoporteId}" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="correo" class="form-label">Email</label>
+                <input type="email" id="correo" class="form-control step_1" name="correo" placeholder="email"  th:field="*{correo}" required>
+                <span th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label for="numeroSoporte" class="form-label">Número de Soporte</label>
+                <input type="text" id="numeroSoporte" class="form-control step_1" placeholder="numeroSoporte" name="numeroSoporte" th:field="*{numeroSoporte}" required>
+                <span th:if="${#fields.hasErrors('numeroSoporte')}" th:errors="*{numeroSoporte}" class="text-danger"></span>
+            </div>
+        </div>
+
+        <!-- step three -->
+        <div class="step">
+            <p class="text-center mb-4">Confirmacion de solicitud</p>
+        </div>
+
+        <!-- start previous / next buttons -->
+        <div class="form-footer d-flex">
+            <button type="button" id="prevBtn" onclick="nextPrev(-1)">Anterior</button>
+            <button type="button" id="nextBtn" onclick="nextPrev(1)">Siguiente</button>
+        </div>
+        <!-- end previous / next buttons -->
+    </form>
 
 </section>
-
+<script th:src="@{/js/multistep.js}"></script>
 </body>
