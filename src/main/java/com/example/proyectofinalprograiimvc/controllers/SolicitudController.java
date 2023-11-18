@@ -85,7 +85,7 @@ public class SolicitudController {
 
         redirect.addFlashAttribute("mensaje", "Solicitud No: "+ nuevaSolicitud.getCodigoSolicitud()+ " creada exitosamente");
 
-        return usuarioLogueado.getTipoUsuario().equals("interno")? "Solicitud/Interna":"Solicitud/Externa";
+        return "redirect:/Solicitud";
     }
 
     @DeleteMapping("/eliminarSolicitud/{id}")
