@@ -51,14 +51,14 @@ public class SolicitudController {
         return usuarioLogueado.getTipoUsuario().equals("interno")? "Solicitud/Interna":"Solicitud/Externa";
     }
 
-   @PostMapping("/guardarSolicitud")
+    @PostMapping("/Solicitud")
     public String guardarSolicitud(@Valid SolicitudDTO solicitudDTO, BindingResult bindingResult, RedirectAttributes redirect){
 
        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
        Usuario usuarioLogueado = usuarioService.buscarPorCorreo(authentication.getName());
 
        if (bindingResult.hasErrors()) {
-           return "redirect:/";
+           return usuarioLogueado.getTipoUsuario().equals("interno")? "Solicitud/Interna":"Solicitud/Externa";
        }
 
          Solicitud nuevaSolicitud = new Solicitud();
@@ -85,7 +85,7 @@ public class SolicitudController {
 
         redirect.addFlashAttribute("mensaje", "Solicitud No: "+ nuevaSolicitud.getCodigoSolicitud()+ " creada exitosamente");
 
-        return "redirect:/";
+        return usuarioLogueado.getTipoUsuario().equals("interno")? "Solicitud/Interna":"Solicitud/Externa";
     }
 
     @DeleteMapping("/eliminarSolicitud/{id}")

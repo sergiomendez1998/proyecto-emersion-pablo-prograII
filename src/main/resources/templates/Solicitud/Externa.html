@@ -5,7 +5,7 @@
 <body th:replace="~{Shared/Layout::common_layout(~{::section}, ~{::script})}">
 <section class="container">
     <h1 class="text-center fs-4">Creacion de Solicitudes externas</h1>
-    <form id="signUpForm" th:action="@{/guardarSolicitud}" method="post" th:object="${solicitudDTO}" class="row g-3 was-validated">
+    <form id="signUpForm" action="#" th:action="@{/Solicitud}" method="post" th:object="${solicitudDTO}" class="row g-3 was-validated">
         <!-- start step indicators -->
         <div class="form-header d-flex mb-4">
             <span class="stepIndicator">Informacion General</span>
@@ -23,8 +23,8 @@
                     <article class="card">
                         <p class="card-header" th:text="${result.getKey()}">Nombre del tipo examen</p>
                         <div class="card-body">
-                            <div class="form-check"  th:each="item : ${result.getValue()}">
-                                <input class="form-check-input step_0" type="checkbox" name="detalles" th:value="${item.getId()}" th:id="${item.getId()}">
+                            <div class="form-check"  th:each="item, itemStat : ${result.getValue()}">
+                                <input class="form-check-input step_0" type="checkbox" th:value="${item.getId()}" th:id="${item.getId()}">
                                 <label class="form-check-label" th:for="${item.getId()}">
                                     <span th:text="${item.getNombre()}">Nombre del item</span>
                                 </label>
@@ -35,8 +35,8 @@
             </section>
 
             <div class="mb-3">
-                <label for="observations">Descripcion</label>
-                <textarea class="form-control step_0" id="observations" name="observations" rows="3" th:field="*{observacion}" required></textarea>
+                <label for="observacion">Descripcion</label>
+                <textarea class="form-control step_0" id="observacion" name="observacion" rows="3" th:field="*{observacion}" required></textarea>
             </div>
         </div>
 
@@ -45,20 +45,20 @@
             <p class="text-center mb-4">Ingresa los datos de soporte</p>
             <div class="mb-3">
                 <div class="col-md-4">
-                    <label for="soporte" class="form-label">Tipo Soporte</label>
-                    <select id="soporte" name="soporte" class="form-select step_1" th:field="*{tipoSoporteId}" required>
+                    <label for="tipoSoporteId" class="form-label">Tipo Soporte</label>
+                    <select id="tipoSoporteId" name="tipoSoporteId" class="form-select step_1" th:field="*{tipoSoporteId}" required>
                         <option value="" selected>Seleccionar...</option>
                         <option th:each="tipoSoporte : ${tipoSoportes}" th:value="${tipoSoporte.id}" th:text="${tipoSoporte.nombre+' - '+tipoSoporte.descripcion}"></option>
                     </select>
                 </div>
             </div>
             <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" id="email" class="form-control step_1" name="email" placeholder="email"  th:field="*{correo}" required>
+                <label for="correo" class="form-label">Email</label>
+                <input type="email" id="correo" class="form-control step_1" name="correo" placeholder="email"  th:field="*{correo}" required>
             </div>
             <div class="mb-3">
-                <label for="telefono" class="form-label">Telefono</label>
-                <input type="text" id="telefono" class="form-control step_1" placeholder="telefono" name="telefono" th:field="*{numeroSoporte}" required>
+                <label for="numeroSoporte" class="form-label">Telefono</label>
+                <input type="text" id="numeroSoporte" class="form-control step_1" placeholder="numeroSoporte" name="numeroSoporte" th:field="*{numeroSoporte}" required>
             </div>
         </div>
 
