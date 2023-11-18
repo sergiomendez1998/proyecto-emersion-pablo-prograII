@@ -18,7 +18,8 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/Solicitud/Create">Creación de Solicitud</a>
                     </li>
-                    <li class="nav-item dropdown">
+                    <div th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                    <li  class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="offcanvasNavbarDropdown1" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Mantenimiento de Solicitudes
                         </a>
@@ -28,6 +29,7 @@
                             <li><a class="dropdown-item" href="#">Solicitudes Creadas</a></li>
                         </ul>
                     </li>
+
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="#">Mantenimiento Analistas</a>
                     </li>
@@ -42,6 +44,7 @@
                             <li><a class="dropdown-item" href="#">Consulta de Documentos</a></li>
                         </ul>
                     </li>
+                    </div>
                     <li class="nav-item">
                         <form method="POST" th:action="@{/logout}">
                             <button type="submit" class="btn btn-link nav-link">
