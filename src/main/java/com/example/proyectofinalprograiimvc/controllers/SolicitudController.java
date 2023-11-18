@@ -44,14 +44,14 @@ public class SolicitudController {
 
     private Map<String, List<Item>> map = new HashMap<>();
 
-    @GetMapping("/Solicitud")
+    @GetMapping("/Solicitud/Create")
     public String SolicitudIn(SolicitudDTO solicitudDTO){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Usuario usuarioLogueado = usuarioService.buscarPorCorreo(authentication.getName());
         return usuarioLogueado.getTipoUsuario().equals("interno")? "Solicitud/Interna":"Solicitud/Externa";
     }
 
-    @PostMapping("/Solicitud")
+    @PostMapping("/Solicitud/Create")
     public String guardarSolicitud(@Valid SolicitudDTO solicitudDTO, BindingResult bindingResult, RedirectAttributes redirect){
 
        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -85,10 +85,10 @@ public class SolicitudController {
 
         redirect.addFlashAttribute("mensaje", "Solicitud No: "+ nuevaSolicitud.getCodigoSolicitud()+ " creada exitosamente");
 
-        return "redirect:/Solicitud";
+        return "redirect:/Solicitud/Create";
     }
 
-    @DeleteMapping("/eliminarSolicitud/{id}")
+    @DeleteMapping("Solicitud/eliminar/{id}")
     public String eliminarSolicitud(@PathVariable Long id, RedirectAttributes redirect){
 
         Solicitud solicitudEncotrada = solicitudService.buscarPorId(id);
@@ -114,20 +114,6 @@ public class SolicitudController {
         return "redirect:/";
     }
 
-    @PostMapping("/procesar")
-    public String procesarFormulario(@RequestParam(name = "detalles", required = false) List<String> detalles) {
-        // Realiza el procesamiento con los detalles recibidos
-        if (detalles != null) {
-            for (String detalle : detalles) {
-                // Realiza acciones con cada detalle
-                System.out.println("Detalle seleccionado: " + detalle);
-            }
-        }
-
-        // Puedes redirigir a otra página o devolver una respuesta según tus necesidades
-        return "redirect:/";
-    }
-
     @ModelAttribute
     public void defaultAttributeRequest(Model model){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -146,7 +132,7 @@ public class SolicitudController {
         model.addAttribute("tipoSoportes", tipoSoportes);
     }
 
-    @GetMapping("/informacionGeneral/{solicitudId}")
+    @GetMapping("Solicitud/Informacion/{solicitudId}")
     public String informacionGeneral(@PathVariable Long solicitudId, Model model){
         Solicitud solicitud = solicitudService.buscarPorId(solicitudId);
 

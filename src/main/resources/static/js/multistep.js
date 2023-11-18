@@ -44,6 +44,8 @@ function nextPrev(n) {
        data.forEach((valor, clave) => {
            console.log({clave, valor});
        });
+       const loading = document.querySelector("#cargando");
+       loading.classList.remove("d-none");
        form.submit();
 
        return false;
@@ -86,6 +88,11 @@ function validateForm() {
 function fixStepIndicator(n) {
     // This function removes the "active" class of all steps...
     var i, x = document.getElementsByClassName("stepIndicator");
+
+    if (n > 2){
+        return;
+    }
+
     for (i = 0; i < x.length; i++) {
         x[i].className = x[i].className.replace(" active", "");
     }
