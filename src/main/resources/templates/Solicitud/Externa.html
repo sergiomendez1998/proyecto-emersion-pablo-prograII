@@ -24,7 +24,7 @@
                         <p class="card-header" th:text="${result.getKey()}">Nombre del tipo examen</p>
                         <div class="card-body">
                             <div class="form-check"  th:each="item, itemStat : ${result.getValue()}">
-                                <input class="form-check-input step_0" type="checkbox" th:value="${item.getId()}" th:id="${item.getId()}">
+                                <input class="form-check-input step_0" type="checkbox" th:name="'items'+'['+${item.getId()-1}+'].id'" th:value="${item.getId()}" th:id="${item.getId()}">
                                 <label class="form-check-label" th:for="${item.getId()}">
                                     <span th:text="${item.getNombre()}">Nombre del item</span>
                                 </label>
@@ -44,7 +44,7 @@
         <div class="step">
             <p class="text-center mb-4">Ingresa los datos de soporte</p>
             <div class="mb-3">
-                <div class="col-md-4">
+                <div class="col">
                     <label for="tipoSoporteId" class="form-label">Tipo Soporte</label>
                     <select id="tipoSoporteId" name="tipoSoporteId" class="form-select step_1" th:field="*{tipoSoporteId}" required>
                         <option value="" selected>Seleccionar...</option>
