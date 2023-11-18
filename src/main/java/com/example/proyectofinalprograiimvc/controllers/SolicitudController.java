@@ -156,6 +156,8 @@ public class SolicitudController {
         informacionGeneral.put("fechaCreacion", solicitud.getFechaRecepcion().toString());
         informacionGeneral.put("cantidadItems", String.valueOf(solicitud.getDetalleSolicitudList().size()));
         informacionGeneral.put("cantidadMuestras", String.valueOf(solicitud.getMuestraList().size()));
+        informacionGeneral.put("numeroExpediente", solicitud.getCliente().getNumeroExpediente());
+
 
         model.addAttribute("informacionGeneral", solicitud);
         return "redirect:/";
