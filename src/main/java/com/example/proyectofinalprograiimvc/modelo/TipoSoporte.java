@@ -21,6 +21,7 @@ public class TipoSoporte {
     private Long id;
     private String nombre;
     private String descripcion;
+    private String tipo;
     private LocalDateTime fechaCreacion;
     private LocalDateTime fechaModificacion;
     private boolean eliminado;

@@ -5,12 +5,12 @@
 <body th:replace="~{Shared/Layout::common_layout(~{::section}, ~{::script})}">
 <section class="container">
     <h1 class="text-center fs-4">Creacion de Solicitudes externas</h1>
-    <form id="signUpForm" action="/procesar" method="post" class="row g-3 was-validated">
+    <form id="signUpForm" th:action="@{/guardarSolicitud}" method="post" th:object="${solicitudDTO}" class="row g-3 was-validated">
         <!-- start step indicators -->
         <div class="form-header d-flex mb-4">
             <span class="stepIndicator">Informacion General</span>
             <span class="stepIndicator">Soporte</span>
-            <span class="stepIndicator">Detalle</span>
+            <span class="stepIndicator">Confirmacion</span>
         </div>
         <!-- end step indicators -->
 
@@ -24,7 +24,7 @@
                         <p class="card-header" th:text="${result.getKey()}">Nombre del tipo examen</p>
                         <div class="card-body">
                             <div class="form-check"  th:each="item : ${result.getValue()}">
-                                <input class="form-check-input step_0" type="checkbox" name="detalles"  th:value="${item.getId()}" th:id="${item.getId()}">
+                                <input class="form-check-input step_0" type="checkbox" name="detalles" th:value="${item.getId()}" th:id="${item.getId()}">
                                 <label class="form-check-label" th:for="${item.getId()}">
                                     <span th:text="${item.getNombre()}">Nombre del item</span>
                                 </label>
@@ -36,7 +36,7 @@
 
             <div class="mb-3">
                 <label for="observations">Descripcion</label>
-                <textarea class="form-control step_0" id="observations" name="observations" rows="3" required></textarea>
+                <textarea class="form-control step_0" id="observations" name="observations" rows="3" th:field="*{observacion}" required></textarea>
             </div>
         </div>
 
@@ -44,31 +44,27 @@
         <div class="step">
             <p class="text-center mb-4">Ingresa los datos de soporte</p>
             <div class="mb-3">
-                <div class="mb-4">
-                    <div class="col-md-4">
-                        <label for="soporte" class="form-label">Tipo Soporte</label>
-                        <select id="soporte" name="soporte" class="form-select step_1"    required>
-                            <option value="" selected>Seleccionar...</option>
-                            <option value="Masculino">Masculino</option>
-                            <option value="Femenino">Femenino</option>
-                            <option value="Otro">Otro</option>
-                        </select>
-                    </div>
+                <div class="col-md-4">
+                    <label for="soporte" class="form-label">Tipo Soporte</label>
+                    <select id="soporte" name="soporte" class="form-select step_1" th:field="*{tipoSoporteId}" required>
+                        <option value="" selected>Seleccionar...</option>
+                        <option th:each="tipoSoporte : ${tipoSoportes}" th:value="${tipoSoporte.id}" th:text="${tipoSoporte.nombre+' - '+tipoSoporte.descripcion}"></option>
+                    </select>
                 </div>
             </div>
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" id="email" class="form-control step_1" name="email" placeholder="email" required>
+                <input type="email" id="email" class="form-control step_1" name="email" placeholder="email"  th:field="*{correo}" required>
             </div>
             <div class="mb-3">
                 <label for="telefono" class="form-label">Telefono</label>
-                <input type="text" id="telefono" class="form-control step_1" placeholder="telefono" name="telefono" required>
+                <input type="text" id="telefono" class="form-control step_1" placeholder="telefono" name="telefono" th:field="*{numeroSoporte}" required>
             </div>
         </div>
 
         <!-- step three -->
         <div class="step">
-            <p class="text-center mb-4">Breve detalle</p>
+            <p class="text-center mb-4">Confirmacion de solicitud</p>
         </div>
 
         <!-- start previous / next buttons -->

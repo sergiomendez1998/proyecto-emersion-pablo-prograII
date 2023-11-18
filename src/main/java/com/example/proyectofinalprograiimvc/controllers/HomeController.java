@@ -1,9 +1,13 @@
 package com.example.proyectofinalprograiimvc.controllers;
 
 import com.example.proyectofinalprograiimvc.modelo.Item;
+import com.example.proyectofinalprograiimvc.modelo.TipoSoporte;
+import com.example.proyectofinalprograiimvc.modelo.Usuario;
 import com.example.proyectofinalprograiimvc.servicios.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,9 +40,6 @@ public class HomeController {
     private UnidadMedidaServiceImpl unidadMedidaService;
 
     @Autowired
-    private TipoSoporteServiceImpl tipoSoporteService;
-
-    @Autowired
     private SolicitudServiceImpl solicitudService;
 
     @GetMapping("/")
@@ -54,7 +55,6 @@ public class HomeController {
         model.addAttribute("tipoExamenes", tipoExamenService.listarTodos());
         model.addAttribute("tipoMuestras", tipoMuestraService.listarTodos());
         model.addAttribute("unidadMedidas", unidadMedidaService.listarTodos());
-        model.addAttribute("tipoSoportes", tipoSoporteService.listarTodos());
         model.addAttribute("solicitudes", solicitudService.listarTodos());
     }
 }

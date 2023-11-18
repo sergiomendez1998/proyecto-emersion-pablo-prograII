@@ -37,4 +37,12 @@ public class ClienteServiceImpl implements CrudService<Cliente>{
     public void actualizar(Cliente entidad) {
 
     }
+
+    public Cliente buscarPorUsuarioId(Long id){
+        return clienteRepositorio.findByUsuarioId(id);
+    }
+
+    public Cliente buscarPorCui(String cui){
+        return clienteRepositorio.findByCui(cui);
+    }
 }

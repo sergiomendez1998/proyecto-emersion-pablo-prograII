@@ -4,4 +4,6 @@ import com.example.proyectofinalprograiimvc.modelo.Cliente;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ClienteRepositorio extends JpaRepository<Cliente, Long> {
+    Cliente findByUsuarioId(Long id);
+    Cliente findByCui(String cui);
 }

@@ -2,10 +2,7 @@ package com.example.proyectofinalprograiimvc.controllers;
 
 import com.example.proyectofinalprograiimvc.Utils;
 import com.example.proyectofinalprograiimvc.dto.SolicitudDTO;
-import com.example.proyectofinalprograiimvc.modelo.DetalleSolicitud;
-import com.example.proyectofinalprograiimvc.modelo.Item;
-import com.example.proyectofinalprograiimvc.modelo.Solicitud;
-import com.example.proyectofinalprograiimvc.modelo.Usuario;
+import com.example.proyectofinalprograiimvc.modelo.*;
 import com.example.proyectofinalprograiimvc.servicios.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,9 +69,9 @@ public class SolicitudController {
          nuevaSolicitud.setCorreo(solicitudDTO.getCorreo());
          nuevaSolicitud.setTipoSoporte(tipoSoporteService.buscarPorId(solicitudDTO.getTipoSoporteId()));
         if (usuarioLogueado.getTipoUsuario().equalsIgnoreCase("externo")) {
-            nuevaSolicitud.setCliente(clienteService.buscarPorId(usuarioLogueado.getId()));
+            nuevaSolicitud.setCliente(clienteService.buscarPorUsuarioId(usuarioLogueado.getId()));
         } else {
-           nuevaSolicitud.setCliente(clienteService.buscarPorId(solicitudDTO.getClienteId()));
+           nuevaSolicitud.setCliente(clienteService.buscarPorCui(solicitudDTO.getClienteCui()));
         }
 
         solicitudService.guardar(nuevaSolicitud);
@@ -132,11 +129,43 @@ public class SolicitudController {
     }
 
     @ModelAttribute
-    public void defaultAttribute(Model model){
+    public void defaultAttributeRequest(Model model){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Usuario usuarioLogueado = usuarioService.buscarPorCorreo(authentication.getName());
+
         tipoExamenService.listarTodos().forEach(tipoExamen -> {
             map.put(tipoExamen.getNombre(), itemService.listarTodos().stream().filter(x -> x.getTipoExamen().getId().equals(tipoExamen.getId())).toList());
         });
         model.addAttribute("itemsAgrupadosPorTipoExamen", map);
+
+        List<TipoSoporte> tipoSoportes = tipoSoporteService.listarTodos()
+                .stream()
+                .filter(tipoSoporte -> tipoSoporte.getTipo().equalsIgnoreCase(usuarioLogueado.getTipoUsuario()))
+                .toList();
+
+        model.addAttribute("tipoSoportes", tipoSoportes);
+    }
+
+    @GetMapping("/informacionGeneral/{solicitudId}")
+    public String informacionGeneral(@PathVariable Long solicitudId, Model model){
+        Solicitud solicitud = solicitudService.buscarPorId(solicitudId);
+
+        Map<String,String> informacionGeneral = new HashMap<>();
+
+        informacionGeneral.put("codigoSolicitud", solicitud.getCodigoSolicitud());
+        informacionGeneral.put("numeroSoporte", solicitud.getNumeroSoporte());
+        informacionGeneral.put("tipoSoporte", solicitud.getTipoSoporte().getNombre());
+        informacionGeneral.put("Solicitante", solicitud.getCliente().getNombre());
+        informacionGeneral.put("correo", solicitud.getCorreo());
+        informacionGeneral.put("Nit", solicitud.getCliente().getNit());
+        informacionGeneral.put("estado", "Creado");
+        informacionGeneral.put("observacion", solicitud.getObservacion());
+        informacionGeneral.put("fechaCreacion", solicitud.getFechaRecepcion().toString());
+        informacionGeneral.put("cantidadItems", String.valueOf(solicitud.getDetalleSolicitudList().size()));
+        informacionGeneral.put("cantidadMuestras", String.valueOf(solicitud.getMuestraList().size()));
+
+        model.addAttribute("informacionGeneral", solicitud);
+        return "redirect:/";
     }
 
 }
