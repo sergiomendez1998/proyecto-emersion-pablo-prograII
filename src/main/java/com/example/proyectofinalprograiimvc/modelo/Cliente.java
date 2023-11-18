@@ -45,7 +45,7 @@ public class Cliente {
     @Size(min = 8, max = 8, message = "El número de teléfono debe tener 8 dígitos")
     private String telefono;
 
-    @NotEmpty(message = "El correo no puede estar vacío")
+    @NotEmpty(message = "El genero no puede estar vacío")
     private String genero;
 
     @NotNull(message = "El usuario no puede estar vacío")

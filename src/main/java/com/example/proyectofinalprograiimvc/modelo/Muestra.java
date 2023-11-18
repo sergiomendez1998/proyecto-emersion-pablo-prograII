@@ -28,6 +28,7 @@ public class Muestra {
     private LocalDateTime fechaCreacion;
     private Date fechaVencimiento;
     private boolean eliminado;
+    private String codigoMuestra;
 
     @ManyToOne
     @JoinColumn(name = "solicitud_id")

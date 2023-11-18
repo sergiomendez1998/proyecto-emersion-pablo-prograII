@@ -1,6 +1,7 @@
 package com.example.proyectofinalprograiimvc.controllers;
 
 
+import com.example.proyectofinalprograiimvc.Utils;
 import com.example.proyectofinalprograiimvc.dto.MuestraDTO;
 import com.example.proyectofinalprograiimvc.modelo.*;
 import com.example.proyectofinalprograiimvc.repositorio.ItemMuestraRepositorio;
@@ -8,12 +9,14 @@ import com.example.proyectofinalprograiimvc.servicios.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public class MuestraController {
@@ -36,6 +39,8 @@ public class MuestraController {
     @Autowired
     private ItemMuestraRepositorio itemMuestraRepositorio;
 
+    private Map<String, List<Item>> map = new HashMap<>();
+
 
     @PostMapping("/guardarMuestra")
     public String guardarMuestra(@Valid MuestraDTO muestraDTO, BindingResult bindingResult, RedirectAttributes redirect){
@@ -46,6 +51,7 @@ public class MuestraController {
 
         Muestra nuevaMuestra = new Muestra();
 
+        nuevaMuestra.setCodigoMuestra(Utils.generarNumeroMuestraRandom());
         nuevaMuestra.setPresentacion(muestraDTO.getPresentacion());
         nuevaMuestra.setCantidad(muestraDTO.getCantidad());
         TipoMuestra tipoMuestra = tipoMuestraService.buscarPorId(muestraDTO.getIdTipoMuestra());
@@ -108,6 +114,29 @@ public class MuestraController {
 
         muestraService.guardar(muestra);
         redirect.addFlashAttribute("mensaje", "Item desasociado correctamente");
+        return "redirect:/";
+    }
+
+    @GetMapping ("/informacionGeneralMuestra/{muestraId}")
+    public String informacionGeneralMuestra(@PathVariable Long muestraId, Model model){
+
+        Muestra muestra = muestraService.buscarPorId(muestraId);
+
+        Map<String, String> informacionGeneralMuestra = new HashMap<>();
+        informacionGeneralMuestra.put("codigoDeMuestra", muestra.getCodigoMuestra());
+        informacionGeneralMuestra.put("presentacion", muestra.getPresentacion());
+        informacionGeneralMuestra.put("cantidad", String.valueOf(muestra.getCantidad()));
+        informacionGeneralMuestra.put("tipoDeMuestra", muestra.getTipoMuestra().getNombre());
+        informacionGeneralMuestra.put("unidadDeMedida", muestra.getUnidadMedida().getNombre());
+        informacionGeneralMuestra.put("fechaDeVencimiento", muestra.getFechaVencimiento().toString());
+        informacionGeneralMuestra.put("solicitud", muestra.getSolicitud().getCodigoSolicitud());
+        informacionGeneralMuestra.put("expediente", String.valueOf(muestra.getSolicitud().getCliente().getNumeroExpediente()));
+        informacionGeneralMuestra.put("nit", muestra.getSolicitud().getCliente().getNit());
+        informacionGeneralMuestra.put("fechaCreacion", muestra.getFechaCreacion().toString());
+        informacionGeneralMuestra.put("estado", "Creado");
+        informacionGeneralMuestra.put("cantidadItems", String.valueOf(muestra.getItemMuestraList().size()));
+
+        model.addAttribute("informacionGeneralMuestra", muestra);
         return "redirect:/";
     }
 

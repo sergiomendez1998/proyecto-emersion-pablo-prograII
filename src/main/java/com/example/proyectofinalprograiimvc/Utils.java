@@ -36,12 +36,23 @@ public class Utils {
     }
 
     public static String generarNumeroMuestraRandom() {
-        Date dateOfReception = new Date();
+        String letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         Random random = new Random();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-        String date = dateFormat.format(dateOfReception);
-        int numbers = random.nextInt(100000);
-        return String.format("%s-%05d", date, numbers);
-    }
+        StringBuilder muestra = new StringBuilder();
+        // Generar 5 letras aleatorias
+        for (int i = 0; i < 5; i++) {
+            muestra.append(letras.charAt(random.nextInt(letras.length())));
+        }
+        // Generar 1 o 2 letras aleatorias y 1 o 2 números aleatorios
+        int cantidadLetras = random.nextBoolean() ? 1 : 2;
+        for (int i = 0; i < cantidadLetras; i++) {
+            muestra.append(random.nextBoolean() ? letras.charAt(random.nextInt(letras.length())) : random.nextInt(10));
+        }
+        // Generar 2 números aleatorios
+        muestra.append(String.format("%02d", random.nextInt(100)));
 
+        // Generar 6 números aleatorios
+        muestra.append(String.format("%06d", random.nextInt(1000000)));
+        return muestra.insert(5, '-').insert(8, '-').toString();
+    }
 }

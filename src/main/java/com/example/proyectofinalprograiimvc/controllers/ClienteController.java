@@ -9,8 +9,14 @@ import com.example.proyectofinalprograiimvc.servicios.UsuarioServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class ClienteController {
@@ -40,5 +46,18 @@ public class ClienteController {
         usuarioService.guardar(cliente.getUsuario());
         clienteService.guardar(cliente);
         return "redirect:/login";
+    }
+
+    @GetMapping("/informacionGeneralCliente/{clienteId}")
+    public String informacionGeneralCliente(@PathVariable Long clienteId, Model model){
+        Cliente cliente = clienteService.buscarPorId(clienteId);
+
+        Map<String, String> informacionGeneralCliente = new HashMap<>();
+
+        informacionGeneralCliente.put("nombre", cliente.getNombre());
+        informacionGeneralCliente.put("nit", cliente.getNit());
+
+        model.addAttribute("informacionGeneralCliente", cliente);
+        return "redirect:/";
     }
 }
