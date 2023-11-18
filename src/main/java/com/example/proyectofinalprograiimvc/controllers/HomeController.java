@@ -57,6 +57,5 @@ public class HomeController {
         model.addAttribute("tipoExamenes", tipoExamenService.listarTodos());
         model.addAttribute("tipoMuestras", tipoMuestraService.listarTodos());
         model.addAttribute("unidadMedidas", unidadMedidaService.listarTodos());
-        model.addAttribute("solicitudes", solicitudService.listarTodos());
     }
 }

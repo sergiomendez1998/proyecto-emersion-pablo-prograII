@@ -2,9 +2,10 @@
     <link rel="stylesheet" th:href="@{/css/multistep.css}">
     <title>Home</title>
 </head>
+
 <body th:replace="~{Shared/Layout::common_layout(~{::section}, ~{::script})}">
 <section class="container">
-    <h1 class="text-center fw-bold">Creacion de Solicitudes externas</h1>
+    <h1 class="text-center fw-bold">Creacion de Solicitudes Internas</h1>
     <!-- Aquí puedes incluir tu estructura HTML existente -->
 
     <div class="alert alert-success alert-dismissible fade show" th:if="${mensaje != null}" role="alert">

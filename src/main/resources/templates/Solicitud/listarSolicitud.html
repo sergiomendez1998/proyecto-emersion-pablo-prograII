@@ -1,0 +1,39 @@
+<head th:replace="~{Shared/Layout::common_head(~{::title}, ~{::link})}">
+    <title>Home</title>
+    <link rel="stylesheet" th:href="@{/css/tabulator.min.css}">
+</head>
+
+<body th:replace="~{Shared/Layout::common_layout(~{::section}, ~{::script})}">
+<section class="container">
+    <div  class="cart">
+        <article id="article_table_items"  class="">
+            <h1 class="text-center fw-bold">SOLICITUDES</h1>
+            <table id="table_soli" class="m-3 table-light table-hover">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>CODIGO DE SOLICITUD</th>
+                    <th>NÚMERO DE SOPORTE</th>
+                    <th>CORREO</th>
+                    <th>OBSERVACIÓN</th>
+                    <th>FECHA DE RECEPCIÓN</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="solicitud: ${solicitudes}">
+                    <td th:text="${solicitud.getId()}"></td>
+                    <td th:text="${solicitud.getCodigoSolicitud()}"></td>
+                    <td th:text="${solicitud.getNumeroSoporte()}"></td>
+                    <td th:text="${solicitud.getCorreo()}"></td>
+                    <td th:text="${solicitud.getObservacion()}"></td>
+                    <td th:text="${solicitud.getFechaRecepcion()}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </article>
+    </div>
+</section>
+<script th:src="@{/js/tabulator.min.js}"></script>
+<script th:src="@{/js/solicitudes.js}"></script>
+
+</body>

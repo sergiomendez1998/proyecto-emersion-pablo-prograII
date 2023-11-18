@@ -51,6 +51,11 @@ public class SolicitudController {
         return usuarioLogueado.getTipoUsuario().equals("interno")? "Solicitud/Interna":"Solicitud/Externa";
     }
 
+    @GetMapping("/Solicitud")
+    public String listarSolicitud(){
+        return "Solicitud/listarSolicitud";
+    }
+
     @PostMapping("/Solicitud/Create")
     public String guardarSolicitud(@Valid SolicitudDTO solicitudDTO, BindingResult bindingResult, RedirectAttributes redirect){
 
@@ -130,6 +135,7 @@ public class SolicitudController {
                 .toList();
 
         model.addAttribute("tipoSoportes", tipoSoportes);
+        model.addAttribute("solicitudes", solicitudService.listarTodos());
     }
 
     @GetMapping("Solicitud/Informacion/{solicitudId}")
