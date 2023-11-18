@@ -73,6 +73,7 @@ public class SolicitudController {
          nuevaSolicitud.setObservacion(solicitudDTO.getObservacion());
          nuevaSolicitud.setCorreo(solicitudDTO.getCorreo());
          nuevaSolicitud.setTipoSoporte(tipoSoporteService.buscarPorId(solicitudDTO.getTipoSoporteId()));
+
         if (usuarioLogueado.getTipoUsuario().equalsIgnoreCase("externo")) {
             nuevaSolicitud.setCliente(clienteService.buscarPorUsuarioId(usuarioLogueado.getId()));
         } else {

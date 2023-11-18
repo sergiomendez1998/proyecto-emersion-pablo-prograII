@@ -2,10 +2,9 @@
     <link rel="stylesheet" th:href="@{/css/multistep.css}">
     <title>Home</title>
 </head>
-
 <body th:replace="~{Shared/Layout::common_layout(~{::section}, ~{::script})}">
 <section class="container">
-    <h1 class="text-center fw-bold">Creacion de Solicitudes Internas</h1>
+    <h1 class="text-center fw-bold">Creacion de Solicitudes Interno</h1>
     <!-- Aquí puedes incluir tu estructura HTML existente -->
 
     <div class="alert alert-success alert-dismissible fade show" th:if="${mensaje != null}" role="alert">
@@ -13,7 +12,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 
-    <form id="signUpForm" action="#" th:action="@{/Solicitud}" method="post" th:object="${solicitudDTO}" class="row g-3 was-validated">
+    <form id="signUpForm" action="#" th:action="@{/Solicitud/Create}" method="post" th:object="${solicitudDTO}" class="row g-3 was-validated">
         <!-- start step indicators -->
         <div class="form-header d-flex mb-4">
             <span class="stepIndicator">Informacion General</span>
@@ -73,11 +72,37 @@
                 <input type="text" id="numeroSoporte" class="form-control step_1" placeholder="numeroSoporte" name="numeroSoporte" th:field="*{numeroSoporte}" required>
                 <span th:if="${#fields.hasErrors('numeroSoporte')}" th:errors="*{numeroSoporte}" class="text-danger"></span>
             </div>
+            <div class="mb-3">
+                <label for="cui" class="form-label">CUI</label>
+                <input type="text" id="cui" class="form-control step_1" name="cui" placeholder="cui"  th:field="*{clienteCui}" maxlength="13" minlength="13" required>
+            </div>
         </div>
 
         <!-- step three -->
         <div class="step">
-            <p class="text-center mb-4">Confirmacion de solicitud</p>
+            <p class="text-center mb-4 fs-2">Desea enviar la solicitud?</p>
+        </div>
+
+        <div class="d-none" id="cargando">
+            <p class="text-center mb-4 fs-2">Enviando Solicitud... Por Favor Espere</p>
+
+            <article class="d-flex justify-content-center">
+                <div class="spinner-grow" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <div class="spinner-grow" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <div class="spinner-grow" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <div class="spinner-grow" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <div class="spinner-grow" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </article>
         </div>
 
         <!-- start previous / next buttons -->
