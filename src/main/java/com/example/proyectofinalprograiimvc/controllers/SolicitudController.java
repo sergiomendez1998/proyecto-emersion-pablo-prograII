@@ -57,7 +57,7 @@ public class SolicitudController {
     }
 
     @PostMapping("/Solicitud/Create")
-    public String guardarSolicitud(@Valid SolicitudDTO solicitudDTO, BindingResult bindingResult, RedirectAttributes redirect){
+    public String guardarSolicitud(@Valid SolicitudDTO solicitudDTO, BindingResult bindingResult, RedirectAttributes redirect, Model model){
 
        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
        Usuario usuarioLogueado = usuarioService.buscarPorCorreo(authentication.getName());
@@ -77,7 +77,21 @@ public class SolicitudController {
         if (usuarioLogueado.getTipoUsuario().equalsIgnoreCase("externo")) {
             nuevaSolicitud.setCliente(clienteService.buscarPorUsuarioId(usuarioLogueado.getId()));
         } else {
-           nuevaSolicitud.setCliente(clienteService.buscarPorCui(solicitudDTO.getClienteCui()));
+
+           if (solicitudDTO.getClienteCui().isEmpty() && solicitudDTO.getClienteCui().isBlank()) {
+               bindingResult.rejectValue("clienteCui", "error.clienteCui", "El CUI del cliente es requerido");
+               return usuarioLogueado.getTipoUsuario().equals("interno")? "Solicitud/Interna":"Solicitud/Externa";
+           }
+
+           Cliente cliente = clienteService.buscarPorCui(solicitudDTO.getClienteCui());
+
+           if (cliente == null){
+               bindingResult.rejectValue("clienteCui", "error.clienteCui", "El CUI del cliente no existe");
+               model.addAttribute("error", "El Cliente aun no tiene cuenta, por favor registrelo antes de crear la solicitud");
+               return usuarioLogueado.getTipoUsuario().equals("interno") ? "Solicitud/Interna" : "Solicitud/Externa";
+           }
+
+           nuevaSolicitud.setCliente(cliente);
         }
 
         solicitudService.guardar(nuevaSolicitud);

@@ -11,13 +11,11 @@ public class AuthController {
 
     @GetMapping("/login")
     public String Login(){
-        log.info("Ejecutando el controlador Spring MVC");
         return "Auth/Login";
     }
 
     @GetMapping("/register")
     public String Register(Cliente cliente){
-        log.info("Ejecutando el controlador Spring MVC");
         return "Auth/Register";
     }
 }

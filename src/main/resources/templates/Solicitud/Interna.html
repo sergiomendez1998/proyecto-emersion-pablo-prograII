@@ -12,6 +12,12 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 
+    <div class="alert alert-danger alert-dismissible fade show" th:if="${error != null}" role="alert">
+        <span th:text="${error}" class="fw-bold">error por solicitud externa</span>
+        <a href="/register">Crear cliente</a>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
     <form id="signUpForm" action="#" th:action="@{/Solicitud/Create}" method="post" th:object="${solicitudDTO}" class="row g-3 was-validated">
         <!-- start step indicators -->
         <div class="form-header d-flex mb-4">
