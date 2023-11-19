@@ -31,8 +31,12 @@ public class SecurityConfig {
             auth.requestMatchers(
                     new AntPathRequestMatcher("/login"),
                     new AntPathRequestMatcher("/register"),
-                    new AntPathRequestMatcher("/guardarCliente"),
-                    new AntPathRequestMatcher("/procesar")
+                    new AntPathRequestMatcher("/public/**"),
+                    new AntPathRequestMatcher("/resources/**"),
+                    new AntPathRequestMatcher("/static/**"),
+                    new AntPathRequestMatcher("/css/**"),
+                    new AntPathRequestMatcher("/js/**"),
+                    new AntPathRequestMatcher("/images/**")
             ).permitAll();
             auth.anyRequest().authenticated();
         }).formLogin(form -> {
@@ -50,17 +54,5 @@ public class SecurityConfig {
         authenticationManagerBuilder.setUserDetailsService(userDetailsService);
         authenticationManagerBuilder.setPasswordEncoder(passwordEncoder);
         return new ProviderManager(authenticationManagerBuilder);
-    }
-
-    @Bean
-    public WebSecurityCustomizer ignoringCustomizer() {
-        return (web) -> web.ignoring().requestMatchers(
-                new AntPathRequestMatcher("/public/**"),
-                new AntPathRequestMatcher("/resources/**"),
-                new AntPathRequestMatcher("/static/**"),
-                new AntPathRequestMatcher("/css/**"),
-                new AntPathRequestMatcher("/js/**"),
-                new AntPathRequestMatcher("/images/**")
-        );
     }
 }
