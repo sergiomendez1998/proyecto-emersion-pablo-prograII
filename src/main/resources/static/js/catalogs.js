@@ -40,12 +40,12 @@ const CONFIG_TABLE = {
     layout: "fitColumns",
     responsiveLayout: "collapse",
     columns: [
-        { formatter: "responsiveCollapse", width: 30, minWidth: 30, hozAlign: "center", resizable: false, headerSort: false },
-        { title: "ID", hozAlign: "left", minWidth: 50, width: 75 },
-        { title: "NOMBRE", hozAlign: "center", minWidth: 50 },
+        { formatter: "responsiveCollapse", minWidth: 30, hozAlign: "center", resizable: false, headerSort: false },
+        { title: "ID", hozAlign: "left", minWidth: 50, },
+        { title: "NOMBRE", hozAlign: "center", minWidth: 150 },
         { title: "DESCRIPCIÓN", hozAlign: "center", minWidth: 300 },
-        { title: "FECHA CREACIÓN", hozAlign: "right", minWidth: 300 },
-        { title: "FECHA ACTUALIZACIÓN", hozAlign: "right", minWidth: 300 },
+        { title: "FECHA CREACIÓN", hozAlign: "right", minWidth: 150 },
+        { title: "FECHA MODIFICACIÓN", hozAlign: "right", minWidth: 150 },
     ]
 };
 

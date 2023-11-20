@@ -8,29 +8,47 @@
     <div  class="cart">
         <article id="article_table_items"  class="">
             <h1 class="text-center fw-bold">SOLICITUDES</h1>
+
             <table id="table_soli" class="m-3 table-light table-hover">
                 <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>CODIGO DE SOLICITUD</th>
-                    <th>NÚMERO DE SOPORTE</th>
-                    <th>CORREO</th>
-                    <th>OBSERVACIÓN</th>
-                    <th>FECHA DE RECEPCIÓN</th>
-                </tr>
+                    <tr>
+                        <th>ID</th>
+                        <th>CODIGO</th>
+                        <th>NO SOPORTE</th>
+                        <th>CORREO</th>
+                        <th>OBSERVACIÓN</th>
+                        <th>FECHA DE RECEPCIÓN</th>
+                    </tr>
                 </thead>
                 <tbody>
-                <tr th:each="solicitud: ${solicitudes}">
-                    <td th:text="${solicitud.getId()}"></td>
-                    <td th:text="${solicitud.getCodigoSolicitud()}"></td>
-                    <td th:text="${solicitud.getNumeroSoporte()}"></td>
-                    <td th:text="${solicitud.getCorreo()}"></td>
-                    <td th:text="${solicitud.getObservacion()}"></td>
-                    <td th:text="${solicitud.getFechaRecepcion()}"></td>
-                </tr>
+                    <tr th:each="solicitud: ${solicitudes}">
+                        <td th:text="${solicitud.getId()}"></td>
+                        <td th:text="${solicitud.getCodigoSolicitud()}"></td>
+                        <td th:text="${solicitud.getNumeroSoporte()}"></td>
+                        <td th:text="${solicitud.getCorreo()}"></td>
+                        <td th:text="${solicitud.getObservacion()}"></td>
+                        <td th:text="${solicitud.getFechaRecepcion()}"></td>
+                    </tr>
                 </tbody>
             </table>
         </article>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Acciones para esta solicitud!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="render-actions">
+<!--                    Aqui se renderizaran las acciones de las solicitudes ver js-->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 <script th:src="@{/js/tabulator.min.js}"></script>
