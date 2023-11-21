@@ -6,6 +6,7 @@ import com.example.proyectofinalprograiimvc.modelo.*;
 import com.example.proyectofinalprograiimvc.servicios.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -112,19 +113,20 @@ public class SolicitudController {
        }
     }
 
-    @PostMapping("/Solicitud/eliminar/{id}")
-    public String eliminarSolicitud(@PathVariable Long id, RedirectAttributes redirect){
+    @RequestMapping(value = "/Solicitud/eliminar/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public ResponseEntity<?> eliminarSolicitud(@PathVariable Long id){
 
-        Solicitud solicitudEncotrada = solicitudService.buscarPorId(id);
+        Solicitud solicitud = solicitudService.buscarPorId(id);
 
-        solicitudEncotrada.setEliminado(true);
-        solicitudEncotrada.getDetalleSolicitudList().forEach(detalleSolicitud -> {
+        solicitud.setEliminado(true);
+        solicitud.getDetalleSolicitudList().forEach(detalleSolicitud -> {
             detalleSolicitud.setEliminado(true);
             detalleSolicitudService.actualizar(detalleSolicitud);
         });
 
-        if(!solicitudEncotrada.getMuestraList().isEmpty()) {
-            solicitudEncotrada.getMuestraList().forEach(muestra -> {
+        if(!solicitud.getMuestraList().isEmpty()) {
+            solicitud.getMuestraList().forEach(muestra -> {
                 muestra.setEliminado(true);
                 muestra.getItemMuestraList().forEach(itemMuestra -> {
                     itemMuestra.setEliminado(true);
@@ -132,9 +134,13 @@ public class SolicitudController {
             });
         }
 
-        solicitudService.actualizar(solicitudEncotrada);
-        redirect.addFlashAttribute("mensaje", "Solicitud No: "+ solicitudEncotrada.getCodigoSolicitud()+ " eliminada exitosamente");
-        return "redirect:/Solicitud";
+        solicitudService.actualizar(solicitud);
+
+        Map<String,String> informacionGeneral = obtenerInformacionGeneral(solicitud);
+        informacionGeneral.remove("estado");
+        informacionGeneral.put("estado", "Eliminada");
+
+        return ResponseEntity.ok(informacionGeneral);
     }
 
     @ModelAttribute
@@ -156,11 +162,18 @@ public class SolicitudController {
         model.addAttribute("solicitudes", solicitudService.listarTodos());
     }
 
-    @GetMapping("Solicitud/Informacion/{solicitudId}")
-    public String informacionGeneral(@PathVariable Long solicitudId, Model model){
+    @RequestMapping(value = "Solicitud/Informacion/{solicitudId}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<?> informacionGeneral(@PathVariable Long solicitudId){
         Solicitud solicitud = solicitudService.buscarPorId(solicitudId);
 
-        Map<String,String> informacionGeneral = new HashMap<>();
+        Map<String, String> informacionGeneral = obtenerInformacionGeneral(solicitud);
+
+        return ResponseEntity.ok(informacionGeneral);
+    }
+
+    private Map<String, String> obtenerInformacionGeneral(Solicitud solicitud){
+        Map<String, String> informacionGeneral = new HashMap<>();
 
         informacionGeneral.put("codigoSolicitud", solicitud.getCodigoSolicitud());
         informacionGeneral.put("numeroSoporte", solicitud.getNumeroSoporte());
@@ -168,16 +181,14 @@ public class SolicitudController {
         informacionGeneral.put("Solicitante", solicitud.getCliente().getNombre());
         informacionGeneral.put("correo", solicitud.getCorreo());
         informacionGeneral.put("Nit", solicitud.getCliente().getNit());
-        informacionGeneral.put("estado", "Creado");
+        informacionGeneral.put("estado", "Creada");
         informacionGeneral.put("observacion", solicitud.getObservacion());
         informacionGeneral.put("fechaCreacion", solicitud.getFechaRecepcion().toString());
         informacionGeneral.put("cantidadItems", String.valueOf(solicitud.getDetalleSolicitudList().size()));
         informacionGeneral.put("cantidadMuestras", String.valueOf(solicitud.getMuestraList().size()));
         informacionGeneral.put("numeroExpediente", solicitud.getCliente().getNumeroExpediente());
 
-
-        model.addAttribute("informacionGeneral", solicitud);
-        return "redirect:/";
+        return informacionGeneral;
     }
 
 }

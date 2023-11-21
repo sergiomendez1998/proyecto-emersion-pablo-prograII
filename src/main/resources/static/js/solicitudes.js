@@ -1,20 +1,17 @@
-
-const renderActionsForRequest = (data) =>{
+const renderActionsForRequest = (data, position) =>{
     const actions = document.querySelector("#render-actions");
     actions.innerHTML = "";
     const actions_items = document.createElement("div");
     actions_items.innerHTML = `<ul class="list-group">
                                   <li class="list-group-item">Solicitud No. ${data["codigo"]}</li>
                                   <li class="list-group-item">
-                                    <a href="#" class="btn btn-outline-primary">Ver Detalles</a>
+                                    <button class="btn btn-outline-primary details" data-id="${data["id"]}">Ver Detalles</button>
                                   </li>
                                   <li class="list-group-item">
                                       <a href="#" class="btn btn-outline-success">Crear Muestras</a>
                                   </li>
                                   <li class="list-group-item">
-                                     <form action="/Solicitud/eliminar/${data['id']}" method="post">
-                                        <input type="submit" value="Eliminar Solicitud" class="btn btn-outline-danger">
-                                      </form>
+                                    <input type="button" value="Eliminar Solicitud" data-position="${position}" data-id="${data["id"]}" class="btn btn-outline-danger delete">
                                   </li>
                                    <li class="list-group-item">
                                       <a href="#" class="btn btn-outline-success">Contribuyente</a>
@@ -28,21 +25,19 @@ const renderActionsForRequest = (data) =>{
                                 </ul>`;
     actions.append(actions_items);
 }
-
 const formatButton = (cell, formatterParams, onRendered) => {
     const data = cell.getRow().getData();
-    console.log(data);
+    const position = cell.getRow().getPosition();
     const button = document.createElement("button");
     button.textContent = "Ver Acciones";
     button.classList = "btn btn-primary";
     button.setAttribute("data-bs-toggle", "modal");
     button.setAttribute("data-bs-target", "#exampleModal");
-    button.addEventListener("click", ()=> renderActionsForRequest(data));
+    button.addEventListener("click", ()=> renderActionsForRequest(data, position));
     return button;
 }
 
-
-new Tabulator("#table_soli" , {
+const table = new Tabulator("#table_soli" , {
     layout: "fitColumns",
     responsiveLayout: "collapse",
     columns: [
@@ -56,6 +51,108 @@ new Tabulator("#table_soli" , {
         {title: "ACCIONES", field: "ID", formatter: formatButton, hozAlign: "center", minWidth: 120 }
     ]
 });
+const generalInformation = (data)=>{
+    const cardBody = Object.keys(data).map((key, idx) => {
+        const li = document.createElement("li");
+        li.classList = "text-start";
+        li.innerHTML = `<span class="fw-bold">${key}</span>: ${data[key]}`;
+        return li;
+    })
+
+    const card = document.createElement("div");
+    card.classList = "card";
+    card.append(...cardBody);
+    return card;
+}
+const deleteRequest = async (id) => {
+    const url = `/Solicitud/eliminar/${id}`;
+    try{
+        swal.fire({
+            title: "Espera un momento",
+            text: "Cargando",
+            icon: "info",
+            confirmButtonText: "Aceptar",
+            didOpen: async () =>{
+                Swal.showLoading();
+                const response = await fetch(url, {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                });
+                const data = await response.json();
+                table.deleteRow(id);
+                Swal.hideLoading();
+                swal.fire({
+                    title: "Solicitud Eliminada",
+                    text: "Solicitud eliminada con exito",
+                    icon: "success",
+                    confirmButtonText: "Aceptar",
+                    html: generalInformation(data)
+                })
+            }
+        });
+    }catch(e){
+        swal.fire({
+            title: "Error",
+            text: "Error al eliminar la solicitud",
+            icon: "error",
+            confirmButtonText: "Aceptar"
+        })
+    }
+};
+
+const getDetails = async (id) => {
+    const url = `/Solicitud/Informacion/${id}`;
+    try{
+        swal.fire({
+            title: "Espera un momento",
+            text: "Cargando",
+            icon: "info",
+            confirmButtonText: "Aceptar",
+            didOpen: async () =>{
+                Swal.showLoading();
+                const response = await fetch(url, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                });
+                const data = await response.json();
+                Swal.hideLoading();
+                swal.fire({
+                    title: "Datos Generales",
+                    icon: "success",
+                    confirmButtonText: "Aceptar",
+                    html: generalInformation(data)
+                });
+            }
+        });
+
+    }catch(ex){
+
+        swal.fire({
+            title: "Error",
+            text: ex.toString(),
+            icon: "error",
+            confirmButtonText: "Aceptar"
+        })
+    }
+};
+
+document.addEventListener("click", async (e)=>{
+
+    if (e.target.matches(".delete")){
+        const id = e.target.dataset.id;
+        await deleteRequest(id);
+    }
+    if (e.target.matches(".details")){
+        const id = e.target.dataset.id;
+        await getDetails(id);
+    }
+});
+
+
 
 
 
