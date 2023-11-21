@@ -12,7 +12,9 @@ const renderActionsForRequest = (data) =>{
                                       <a href="#" class="btn btn-outline-success">Crear Muestras</a>
                                   </li>
                                   <li class="list-group-item">
-                                     <button type="button" class="btn btn-outline-danger" onclick="eliminarSolicitud(${data['id']})">Eliminar Solicitud</button>
+                                     <form action="/Solicitud/eliminar/${data['id']}" method="post">
+                                        <input type="submit" value="Eliminar Solicitud" class="btn btn-outline-danger">
+                                      </form>
                                   </li>
                                    <li class="list-group-item">
                                       <a href="#" class="btn btn-outline-success">Contribuyente</a>
@@ -53,35 +55,7 @@ new Tabulator("#table_soli" , {
         {title: "FECHA DE RECEPCIÓN", hozAlign: "center", minWidth: 150},
         {title: "ACCIONES", field: "ID", formatter: formatButton, hozAlign: "center", minWidth: 120 }
     ]
-})
-
-function eliminarSolicitud(id) {
-    fetch(`/Solicitud/eliminar/${id}`, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    })
-        .then(response => {
-            if (response.ok) {
-                return response.json().then(data => {
-                    if (data.error) {
-                        throw new Error(data.error);
-                    }
-                    return data;
-                });
-            } else {
-                throw new Error(`Error al eliminar la solicitud: ${response.statusText}`);
-            }
-        })
-        .then(data => {
-            window.location.href = '/Solicitud';
-        })
-        .catch(error => {
-            console.error('Error al eliminar la solicitud:', error);
-            window.location.href = '/Solicitud';
-        });
-}
+});
 
 
 

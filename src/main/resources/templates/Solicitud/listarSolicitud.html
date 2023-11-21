@@ -6,10 +6,12 @@
 
 <body th:replace="~{Shared/Layout::common_layout(~{::section}, ~{::script})}">
 <section class="container">
+    <div class="alert alert-danger" th:if="${mensaje !=null}" role="alert">
+        <label th:text="${mensaje}"><span aria-hidden="true">&times;</span></label>
+    </div>
     <div  class="cart">
         <article id="article_table_items"  class="">
             <h1 class="text-center fw-bold">SOLICITUDES</h1>
-
             <table id="table_soli" class="m-3 table-light table-hover">
                 <thead>
                     <tr>
@@ -40,9 +42,6 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Acciones para esta solicitud!</h5>
-                    <div class="alert alert-danger" th:if="${mensaje !=null}" role="alert">
-                        <label th:text="${mensaje}"><span aria-hidden="true">&times;</span></label>
-                    </div>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="render-actions">

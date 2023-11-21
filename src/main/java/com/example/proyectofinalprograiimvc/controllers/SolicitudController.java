@@ -58,57 +58,61 @@ public class SolicitudController {
 
     @PostMapping("/Solicitud/Create")
     public String guardarSolicitud(@Valid SolicitudDTO solicitudDTO, BindingResult bindingResult, RedirectAttributes redirect, Model model){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Usuario usuarioLogueado = usuarioService.buscarPorCorreo(authentication.getName());
+       try {
 
-       Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-       Usuario usuarioLogueado = usuarioService.buscarPorCorreo(authentication.getName());
-
-       if (bindingResult.hasErrors()) {
-           return usuarioLogueado.getTipoUsuario().equals("interno")? "Solicitud/Interna":"Solicitud/Externa";
-       }
-
-         Solicitud nuevaSolicitud = new Solicitud();
-
-         nuevaSolicitud.setCodigoSolicitud(Utils.generarNumeroSolicitudRandom(usuarioLogueado.getTipoUsuario()));
-         nuevaSolicitud.setNumeroSoporte(solicitudDTO.getNumeroSoporte());
-         nuevaSolicitud.setObservacion(solicitudDTO.getObservacion());
-         nuevaSolicitud.setCorreo(solicitudDTO.getCorreo());
-         nuevaSolicitud.setTipoSoporte(tipoSoporteService.buscarPorId(solicitudDTO.getTipoSoporteId()));
-
-        if (usuarioLogueado.getTipoUsuario().equalsIgnoreCase("externo")) {
-            nuevaSolicitud.setCliente(clienteService.buscarPorUsuarioId(usuarioLogueado.getId()));
-        } else {
-
-           if (solicitudDTO.getClienteCui().isEmpty() && solicitudDTO.getClienteCui().isBlank()) {
-               bindingResult.rejectValue("clienteCui", "error.clienteCui", "El CUI del cliente es requerido");
+           if (bindingResult.hasErrors()) {
                return usuarioLogueado.getTipoUsuario().equals("interno")? "Solicitud/Interna":"Solicitud/Externa";
            }
 
-           Cliente cliente = clienteService.buscarPorCui(solicitudDTO.getClienteCui());
+           Solicitud nuevaSolicitud = new Solicitud();
 
-           if (cliente == null){
-               bindingResult.rejectValue("clienteCui", "error.clienteCui", "El CUI del cliente no existe");
-               model.addAttribute("error", "El Cliente aun no tiene cuenta, por favor registrelo antes de crear la solicitud");
-               return usuarioLogueado.getTipoUsuario().equals("interno") ? "Solicitud/Interna" : "Solicitud/Externa";
+           nuevaSolicitud.setCodigoSolicitud(Utils.generarNumeroSolicitudRandom(usuarioLogueado.getTipoUsuario()));
+           nuevaSolicitud.setNumeroSoporte(solicitudDTO.getNumeroSoporte());
+           nuevaSolicitud.setObservacion(solicitudDTO.getObservacion());
+           nuevaSolicitud.setCorreo(solicitudDTO.getCorreo());
+           nuevaSolicitud.setTipoSoporte(tipoSoporteService.buscarPorId(solicitudDTO.getTipoSoporteId()));
+
+           if (usuarioLogueado.getTipoUsuario().equalsIgnoreCase("externo")) {
+               nuevaSolicitud.setCliente(clienteService.buscarPorUsuarioId(usuarioLogueado.getId()));
+           } else {
+
+               if (solicitudDTO.getClienteCui().isEmpty() && solicitudDTO.getClienteCui().isBlank()) {
+                   bindingResult.rejectValue("clienteCui", "error.clienteCui", "El CUI del cliente es requerido");
+                   return usuarioLogueado.getTipoUsuario().equals("interno")? "Solicitud/Interna":"Solicitud/Externa";
+               }
+
+               Cliente cliente = clienteService.buscarPorCui(solicitudDTO.getClienteCui());
+
+               if (cliente == null){
+                   bindingResult.rejectValue("clienteCui", "error.clienteCui", "El CUI del cliente no existe");
+                   model.addAttribute("error", "El Cliente aun no tiene cuenta, por favor registrelo antes de crear la solicitud");
+                   return usuarioLogueado.getTipoUsuario().equals("interno") ? "Solicitud/Interna" : "Solicitud/Externa";
+               }
+
+               nuevaSolicitud.setCliente(cliente);
            }
 
-           nuevaSolicitud.setCliente(cliente);
-        }
+           solicitudService.guardar(nuevaSolicitud);
 
-        solicitudService.guardar(nuevaSolicitud);
+           solicitudDTO.getItems().stream().filter(itemDTO -> itemDTO.getId() != null).forEach(item -> {
+               DetalleSolicitud nuevoDetalleSolicitud = new DetalleSolicitud();
+               nuevoDetalleSolicitud.setSolicitud(nuevaSolicitud);
+               nuevoDetalleSolicitud.setItem(itemService.buscarPorId(item.getId()));
+               detalleSolicitudService.guardar(nuevoDetalleSolicitud);
+           });
 
-        solicitudDTO.getItems().forEach(item -> {
-            DetalleSolicitud nuevoDetalleSolicitud = new DetalleSolicitud();
-            nuevoDetalleSolicitud.setSolicitud(nuevaSolicitud);
-            nuevoDetalleSolicitud.setItem(itemService.buscarPorId(item.getId()));
-            detalleSolicitudService.guardar(nuevoDetalleSolicitud);
-        });
+           redirect.addFlashAttribute("mensaje", "Solicitud No: "+ nuevaSolicitud.getCodigoSolicitud()+ " creada exitosamente");
 
-        redirect.addFlashAttribute("mensaje", "Solicitud No: "+ nuevaSolicitud.getCodigoSolicitud()+ " creada exitosamente");
-
-        return "redirect:/Solicitud/Create";
+           return "redirect:/Solicitud/Create";
+       }catch (Exception exception){
+           model.addAttribute("error", exception.getMessage());
+           return usuarioLogueado.getTipoUsuario().equals("interno") ? "Solicitud/Interna" : "Solicitud/Externa";
+       }
     }
 
-    @DeleteMapping("/Solicitud/eliminar/{id}")
+    @PostMapping("/Solicitud/eliminar/{id}")
     public String eliminarSolicitud(@PathVariable Long id, RedirectAttributes redirect){
 
         Solicitud solicitudEncotrada = solicitudService.buscarPorId(id);
@@ -130,7 +134,7 @@ public class SolicitudController {
 
         solicitudService.actualizar(solicitudEncotrada);
         redirect.addFlashAttribute("mensaje", "Solicitud No: "+ solicitudEncotrada.getCodigoSolicitud()+ " eliminada exitosamente");
-        return "redirect:/Solcitud";
+        return "redirect:/Solicitud";
     }
 
     @ModelAttribute
