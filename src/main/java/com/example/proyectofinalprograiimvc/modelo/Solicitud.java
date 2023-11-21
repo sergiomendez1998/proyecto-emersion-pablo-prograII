@@ -35,7 +35,6 @@ public class Solicitud {
     @JoinColumn(name = "id_tipo_soporte")
     private TipoSoporte tipoSoporte;
 
-
     @OneToMany (mappedBy = "solicitud")
     private List<DetalleSolicitud> detalleSolicitudList = new ArrayList<>();
 

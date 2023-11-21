@@ -22,7 +22,6 @@ public class Muestra {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String etiqueta;
     private String presentacion;
     private int cantidad;
     private LocalDateTime fechaCreacion;

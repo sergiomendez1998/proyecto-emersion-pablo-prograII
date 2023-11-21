@@ -108,7 +108,7 @@ public class SolicitudController {
         return "redirect:/Solicitud/Create";
     }
 
-    @DeleteMapping("Solicitud/eliminar/{id}")
+    @DeleteMapping("/Solicitud/eliminar/{id}")
     public String eliminarSolicitud(@PathVariable Long id, RedirectAttributes redirect){
 
         Solicitud solicitudEncotrada = solicitudService.buscarPorId(id);
@@ -119,19 +119,18 @@ public class SolicitudController {
             detalleSolicitudService.actualizar(detalleSolicitud);
         });
 
-        solicitudEncotrada.getMuestraList().forEach(muestra -> {
-             muestra.getItemMuestraList().forEach(itemMuestra -> {
-                 itemMuestra.setEliminado(true);
-             });
-         });
-
-       solicitudEncotrada.getMuestraList().forEach(muestra -> {
-          muestra.setEliminado(true);
-       });
+        if(!solicitudEncotrada.getMuestraList().isEmpty()) {
+            solicitudEncotrada.getMuestraList().forEach(muestra -> {
+                muestra.setEliminado(true);
+                muestra.getItemMuestraList().forEach(itemMuestra -> {
+                    itemMuestra.setEliminado(true);
+                });
+            });
+        }
 
         solicitudService.actualizar(solicitudEncotrada);
         redirect.addFlashAttribute("mensaje", "Solicitud No: "+ solicitudEncotrada.getCodigoSolicitud()+ " eliminada exitosamente");
-        return "redirect:/";
+        return "redirect:/Solcitud";
     }
 
     @ModelAttribute

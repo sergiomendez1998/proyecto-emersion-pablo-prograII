@@ -1,6 +1,7 @@
 <head th:replace="~{Shared/Layout::common_head(~{::title}, ~{::link})}">
     <title>Home</title>
     <link rel="stylesheet" th:href="@{/css/tabulator.min.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css">
 </head>
 
 <body th:replace="~{Shared/Layout::common_layout(~{::section}, ~{::script})}">
@@ -39,6 +40,9 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Acciones para esta solicitud!</h5>
+                    <div class="alert alert-danger" th:if="${mensaje !=null}" role="alert">
+                        <label th:text="${mensaje}"><span aria-hidden="true">&times;</span></label>
+                    </div>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="render-actions">
@@ -53,5 +57,5 @@
 </section>
 <script th:src="@{/js/tabulator.min.js}"></script>
 <script th:src="@{/js/solicitudes.js}"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js"></script>
 </body>
