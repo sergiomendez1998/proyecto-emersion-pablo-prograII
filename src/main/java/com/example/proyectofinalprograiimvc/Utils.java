@@ -6,6 +6,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Random;
 
@@ -54,5 +57,33 @@ public class Utils {
         // Generar 6 números aleatorios
         muestra.append(String.format("%06d", random.nextInt(1000000)));
         return muestra.insert(5, '-').insert(8, '-').toString();
+    }
+
+    public static Date convertirFecha(String fechaString) {
+
+        // Especifica el patrón de formato de la cadena de fecha
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        try {
+            // Convierte la cadena de fecha a un objeto LocalDate
+            LocalDate fechaIngresada = LocalDate.parse(fechaString, formatter);
+
+            // Obtiene la fecha actual
+            LocalDate fechaHoy = LocalDate.now();
+
+            // Compara las fechas
+            if (fechaIngresada.isEqual(fechaHoy) || fechaIngresada.isAfter(fechaHoy)) {
+                return convertirLocalDateADate(fechaIngresada);
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+           return null; // Manejo de la excepción en caso de que la cadena de fecha sea inválida
+        }
+    }
+
+    public static Date convertirLocalDateADate(LocalDate localDate) {
+        // Convierte de LocalDate a Date
+        return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
 }

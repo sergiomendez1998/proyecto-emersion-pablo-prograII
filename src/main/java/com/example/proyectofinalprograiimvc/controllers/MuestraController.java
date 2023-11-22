@@ -14,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,36 +40,55 @@ public class MuestraController {
     @Autowired
     private ItemMuestraRepositorio itemMuestraRepositorio;
 
-    @GetMapping("/Muestra/Create/{solicitudId}")
+    @GetMapping("/Muestra/Crear/{solicitudId}")
     public String MuestraIn(@PathVariable Long solicitudId, MuestraDTO muestraDTO, Model model){
 
 
+        muestraDTO.setIdSolicitud(solicitudId);
         model.addAttribute("solicitudId", solicitudId);
         return "Muestra/Crear";
     }
 
-    @PostMapping("/guardarMuestra/{solicitudId}")
-    public String guardarMuestra(@PathVariable Long solicitudId, @Valid MuestraDTO muestraDTO, BindingResult bindingResult, RedirectAttributes redirect){
+    @PostMapping("/Muestra/Crear")
+    public String guardarMuestra(@Valid MuestraDTO muestraDTO, BindingResult bindingResult, RedirectAttributes redirect, Model model){
 
-        if (bindingResult.hasErrors()) {
-            return "redirect:/";
-        }
+       try {
+           Date fechaIngresada = Utils.convertirFecha(muestraDTO.getFechaVencimiento());
 
-        Muestra nuevaMuestra = new Muestra();
+           if (bindingResult.hasErrors()) {
+               model.addAttribute("solicitudId", muestraDTO.getIdSolicitud());
+               model.addAttribute("error", "Error al crear la muestra");
+               return "Muestra/Crear";
+           }
 
-        nuevaMuestra.setCodigoMuestra(Utils.generarNumeroMuestraRandom());
-        nuevaMuestra.setPresentacion(muestraDTO.getPresentacion());
-        nuevaMuestra.setCantidad(muestraDTO.getCantidad());
-        TipoMuestra tipoMuestra = tipoMuestraService.buscarPorId(muestraDTO.getIdTipoMuestra());
-        nuevaMuestra.setTipoMuestra(tipoMuestra);
-        UnidadMedida unidadMedida = unidadMedidaService.buscarPorId(muestraDTO.getIdUnidadMedida());
-        nuevaMuestra.setUnidadMedida(unidadMedida);
-        nuevaMuestra.setFechaVencimiento(muestraDTO.getFechaVencimiento());
-        nuevaMuestra.setSolicitud(solicitudService.buscarPorId(solicitudId));
+           if (fechaIngresada == null) {
+               model.addAttribute("solicitudId", muestraDTO.getIdSolicitud());
+               model.addAttribute("error", "La fecha de vencimiento no puede ser menor a la fecha actual");
+               bindingResult.rejectValue("fechaVencimiento", "error.fechaVencimiento", "La fecha de vencimiento no puede ser menor a la fecha actual");
+               return "Muestra/Crear";
+           }
 
-        muestraService.guardar(nuevaMuestra);
-         redirect.addFlashAttribute("mensaje", "Muestra creada exitosamente!");
-        return "redirect:/Solicitud";
+           Muestra nuevaMuestra = new Muestra();
+
+           nuevaMuestra.setCodigoMuestra(Utils.generarNumeroMuestraRandom());
+           nuevaMuestra.setPresentacion(muestraDTO.getPresentacion());
+           nuevaMuestra.setCantidad(muestraDTO.getCantidad());
+           TipoMuestra tipoMuestra = tipoMuestraService.buscarPorId(muestraDTO.getIdTipoMuestra());
+           nuevaMuestra.setTipoMuestra(tipoMuestra);
+           UnidadMedida unidadMedida = unidadMedidaService.buscarPorId(muestraDTO.getIdUnidadMedida());
+           nuevaMuestra.setUnidadMedida(unidadMedida);
+           nuevaMuestra.setFechaVencimiento(fechaIngresada);
+           nuevaMuestra.setSolicitud(solicitudService.buscarPorId(muestraDTO.getIdSolicitud()));
+
+           muestraService.guardar(nuevaMuestra);
+           redirect.addFlashAttribute("mensaje", "Muestra creada exitosamente!");
+           return "redirect:/Muestra/Crear/" + muestraDTO.getIdSolicitud();
+
+       }catch (Exception e){
+           model.addAttribute("solicitudId", muestraDTO.getIdSolicitud());
+           model.addAttribute("error", e.getMessage());
+           return "Muestra/Crear";
+       }
     }
 
     @DeleteMapping("/eliminarMuestra/{id}")
@@ -145,4 +165,12 @@ public class MuestraController {
         return "redirect:/";
     }
 
+    @ModelAttribute
+    public void defaultAttributeRequest(Model model){
+        List<UnidadMedida> unidadMedidas = unidadMedidaService.listarTodos();
+        model.addAttribute("unidadMedidas", unidadMedidas);
+
+        List<TipoMuestra> tipoMuestras = tipoMuestraService.listarTodos();
+        model.addAttribute("tipoMuestras", tipoMuestras);
+    }
 }

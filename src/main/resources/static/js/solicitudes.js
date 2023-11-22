@@ -8,7 +8,7 @@ const renderActionsForRequest = (data, position) => {
                                     <button class="btn btn-outline-primary details" data-id="${data["id"]}">Ver Detalles</button>
                                   </li>
                                   <li class="list-group-item">
-                                      <a href="/Muestra/Create/${data["id"]}" class="btn btn-outline-success">Crear Muestras</a>
+                                      <a href="/Muestra/Crear/${data["id"]}" class="btn btn-outline-success">Crear Muestras</a>
                                   </li>
                                    <li class="list-group-item">
                                      <button class="btn btn-outline-success contribuyente" data-id="${data["id"]}">Expediente</a>

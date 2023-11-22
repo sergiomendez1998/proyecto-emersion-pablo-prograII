@@ -1,13 +1,58 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+<head th:replace="~{Shared/Layout::common_head(~{::title}, ~{})}">
+    <title>Crear Solicitud</title>
 </head>
-<body>
 
+<body th:replace="~{Shared/Layout::common_layout(~{::section}, ~{})}">
+    <section class="container">
+        <div class="alert alert-danger" th:if="${error !=null}" role="alert">
+            <span th:text="${error}">mensaje de error</span>
+        </div>
+        <div class="alert alert-success" th:if="${mensaje !=null}" role="alert">
+            <span th:text="${mensaje}">mensaje informativo</span>
+        </div>
+        <h1 class="fw-bold text-center">Creacion de Muestras Medicas</h1>
+        <form th:action="@{/Muestra/Crear}" method="post" th:object="${muestraDTO}" class="row g-3 was-validated my-4">
+            <input type="hidden" name="idSolicitud" th:field="*{idSolicitud}" th:value="${solicitudId}" required>
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <label for="presentacion">Presentación</label>
+                    <input type="text" class="form-control" id="presentacion" name="presentacion" th:field="*{presentacion}" required>
+                    <span th:if="${#fields.hasErrors('presentacion')}" th:errors="*{presentacion}" class="text-danger"></span>
+                </div>
+                <div class="col-12 col-md-6">
+                    <label for="cantidad">Cantidad</label>
+                    <input type="number" class="form-control" id="cantidad" name="cantidad" th:field="*{cantidad}" required>
+                    <span th:if="${#fields.hasErrors('cantidad')}" th:errors="*{cantidad}" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <label for="idTipoMuestra" class="form-label">Tipo de Muestra</label>
+                    <select id="idTipoMuestra" name="idTipoMuestra" class="form-select" th:field="*{idTipoMuestra}" required>
+                        <option value="" selected>Seleccionar...</option>
+                        <option th:each="muestra : ${tipoMuestras}" th:value="${muestra.getId()}" th:text="${muestra.getNombre()+' - '+muestra.getDescripcion()}"></option>
+                    </select>
+                    <span th:if="${#fields.hasErrors('idTipoMuestra')}" th:errors="*{idTipoMuestra}" class="text-danger"></span>
+                </div>
+                <div class="col-12 col-md-6">
+                    <label for="idUnidadMedida" class="form-label">Unidad de Medida</label>
+                    <select id="idUnidadMedida" name="idUnidadMedida" class="form-select" th:field="*{idUnidadMedida}" required>
+                        <option value="" selected>Seleccionar...</option>
+                        <option th:each="medida : ${unidadMedidas}" th:value="${medida.getId()}" th:text="${medida.getNombre()+' - '+medida.getDescripcion()}"></option>
+                    </select>
+                    <span th:if="${#fields.hasErrors('idUnidadMedida')}" th:errors="*{idUnidadMedida}" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <label for="fechaVencimiento">Fecha vencimiento de la muestra</label>
+                    <input type="date" class="form-control" id="fechaVencimiento" name="fechaVencimiento" th:field="*{fechaVencimiento}" required>
+                    <span th:if="${#fields.hasErrors('fechaVencimiento')}" th:errors="*{fechaVencimiento}" class="text-danger"></span>
+                </div>
+                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center">
+                    <button type="submit" class="btn btn-outline-primary bg-gradient mt-5">Crear Muestra</button>
+                </div>
+            </div>
+        </form>
+    </section>
 </body>
-</html>

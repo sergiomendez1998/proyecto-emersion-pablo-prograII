@@ -1,6 +1,6 @@
 package com.example.proyectofinalprograiimvc.dto;
 
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,13 +10,27 @@ import java.util.Date;
 @Setter
 public class MuestraDTO {
     @NotEmpty(message = "La presentacion es requerida")
+    @Size(min = 5, message = "La presentacion debe tener al menos 5 caracteres")
+    @Pattern(regexp = "^[a-zA-Z ]+$", message = "La presentacion debe contener solo letras y espacios")
     private String presentacion;
-    @NotEmpty(message = "La cantidad es requerida")
+
+    @NotNull(message = "La cantidad es requerida")
+    @Min(value = 1, message = "La cantidad debe ser mayor que 0")
     private int cantidad;
-    @NotEmpty(message = "Es obligatorio el tipo de muestra")
+
+    @NotNull(message = "El tipo de muestra es requerido")
+    @Min(value = 1, message = "El tipo de muestra es requerido")
     private Long idTipoMuestra;
-    @NotEmpty(message = "Es obligatorio la unidad de medida")
+
+    @NotNull(message = "La unidad de medida es requerida")
+    @Min(value = 1, message = "La unidad de medida es requerida")
     private Long idUnidadMedida;
-    @NotEmpty(message = "Es obligatorio fecha de vencimiento")
-    private Date fechaVencimiento;
+
+    @NotNull(message = "La solicitud es requerida")
+    @Min(value = 1, message = "La solicitud es requerida")
+    private Long idSolicitud;
+
+    @NotNull(message = "Es obligatorio fecha de vencimiento")
+    @NotEmpty(message = "La fecha de vencimiento es requerida")
+    private String fechaVencimiento;
 }
