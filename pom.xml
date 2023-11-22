@@ -108,6 +108,11 @@
             <version>11.9.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>select2</artifactId>
+            <version>4.0.13</version>
+        </dependency>
     </dependencies>
 
     <build>

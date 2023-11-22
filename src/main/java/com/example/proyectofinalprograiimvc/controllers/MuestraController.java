@@ -39,12 +39,12 @@ public class MuestraController {
     @Autowired
     private ItemMuestraRepositorio itemMuestraRepositorio;
 
-    private Map<String, List<Item>> map = new HashMap<>();
-
-    @GetMapping("/Muestra/{solicitudId}")
+    @GetMapping("/Muestra/Create/{solicitudId}")
     public String MuestraIn(@PathVariable Long solicitudId, MuestraDTO muestraDTO, Model model){
+
+
         model.addAttribute("solicitudId", solicitudId);
-        return "Muestra/Muestra";
+        return "Muestra/Crear";
     }
 
     @PostMapping("/guardarMuestra/{solicitudId}")
