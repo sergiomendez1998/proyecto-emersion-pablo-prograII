@@ -175,6 +175,8 @@ public class SolicitudController {
     private Map<String, String> obtenerInformacionGeneral(Solicitud solicitud){
         Map<String, String> informacionGeneral = new HashMap<>();
 
+        informacionGeneral.put("id", String.valueOf(solicitud.getId()));
+        informacionGeneral.put("nombre", solicitud.getCliente().getNombre()+ " " + solicitud.getCliente().getApellido());
         informacionGeneral.put("codigoSolicitud", solicitud.getCodigoSolicitud());
         informacionGeneral.put("numeroSoporte", solicitud.getNumeroSoporte());
         informacionGeneral.put("tipoSoporte", solicitud.getTipoSoporte().getNombre());

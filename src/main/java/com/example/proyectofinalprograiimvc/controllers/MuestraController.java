@@ -41,9 +41,14 @@ public class MuestraController {
 
     private Map<String, List<Item>> map = new HashMap<>();
 
+    @GetMapping("/Muestra/{solicitudId}")
+    public String MuestraIn(@PathVariable Long solicitudId, MuestraDTO muestraDTO, Model model){
+        model.addAttribute("solicitudId", solicitudId);
+        return "Muestra/Muestra";
+    }
 
-    @PostMapping("/guardarMuestra")
-    public String guardarMuestra(@Valid MuestraDTO muestraDTO, BindingResult bindingResult, RedirectAttributes redirect){
+    @PostMapping("/guardarMuestra/{solicitudId}")
+    public String guardarMuestra(@PathVariable Long solicitudId, @Valid MuestraDTO muestraDTO, BindingResult bindingResult, RedirectAttributes redirect){
 
         if (bindingResult.hasErrors()) {
             return "redirect:/";
@@ -59,11 +64,11 @@ public class MuestraController {
         UnidadMedida unidadMedida = unidadMedidaService.buscarPorId(muestraDTO.getIdUnidadMedida());
         nuevaMuestra.setUnidadMedida(unidadMedida);
         nuevaMuestra.setFechaVencimiento(muestraDTO.getFechaVencimiento());
-        nuevaMuestra.setSolicitud(solicitudService.buscarPorId(muestraDTO.getSolicidudId()));
+        nuevaMuestra.setSolicitud(solicitudService.buscarPorId(solicitudId));
 
         muestraService.guardar(nuevaMuestra);
-
-        return "redirect:/";
+         redirect.addFlashAttribute("mensaje", "Muestra creada exitosamente!");
+        return "redirect:/Solicitud";
     }
 
     @DeleteMapping("/eliminarMuestra/{id}")

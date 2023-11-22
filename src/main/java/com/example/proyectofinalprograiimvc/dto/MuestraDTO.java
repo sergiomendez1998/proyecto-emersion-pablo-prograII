@@ -19,6 +19,4 @@ public class MuestraDTO {
     private Long idUnidadMedida;
     @NotEmpty(message = "Es obligatorio fecha de vencimiento")
     private Date fechaVencimiento;
-    @NotEmpty(message = "Es obligatoria la solicitud")
-    private Long solicidudId;
 }
