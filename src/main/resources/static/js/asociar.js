@@ -10,7 +10,7 @@ const formatButton = (cell, formatterParams, onRendered) => {
 }
 
 
-const table = new Tabulator("#table_muestras_asociadas", {
+var table = new Tabulator("#table_muestras_asociadas", {
     layout: "fitColumns",
     responsiveLayout: "collapse",
     columns: [
@@ -21,4 +21,16 @@ const table = new Tabulator("#table_muestras_asociadas", {
         {title: "SOLICITUD", hozAlign: "center", minWidth: 50},
         {title: "ACCIONES", field: "ID", formatter: formatButton, hozAlign: "center", minWidth: 120}
     ]
+});
+
+document.getElementById("download-xlsx").addEventListener("click", function(){
+    table.download("xlsx", "items.xlsx", {sheetName:"itemsAsociados"});
+});
+
+//trigger download of data.pdf file
+document.getElementById("download-pdf").addEventListener("click", function(){
+    table.download("pdf", "items.pdf", {
+        orientation:"portrait", //set page orientation to portrait
+        title:"Items Asociados", //add title to report
+    });
 });

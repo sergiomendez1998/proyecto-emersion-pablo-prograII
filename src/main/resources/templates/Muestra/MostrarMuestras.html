@@ -13,7 +13,14 @@
         <p th:text="${mensaje}" class="fw-bold">mensaje de eliminacion de muestras</p>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
-
+      <div>
+        <button id="download-xlsx" class="btn btn-excel">
+          <i class="fas fa-file-excel"></i> Descargar Excel
+        </button>
+        <button id="download-pdf" class="btn btn-pdf">
+          <i class="fas fa-file-pdf"></i> Descargar PDF
+        </button>
+      </div>
       <table id="table_muestras" class="m-3 table-light table-hover">
         <thead>
         <tr>
@@ -43,4 +50,7 @@
 </section>
 <script th:src="@{/js/tabulator.min.js}"></script>
 <script th:src="@{/js/muestras.js}"></script>
+<script type="text/javascript" src="https://oss.sheetjs.com/sheetjs/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.20/jspdf.plugin.autotable.min.js"></script>
 </body>

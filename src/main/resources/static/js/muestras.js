@@ -17,7 +17,7 @@ const formatButton = (cell, formatterParams, onRendered) => {
     return button;
 }
 
-const table = new Tabulator("#table_muestras", {
+var table = new Tabulator("#table_muestras", {
     layout: "fitColumns",
     responsiveLayout: "collapse",
     columns: [
@@ -31,6 +31,19 @@ const table = new Tabulator("#table_muestras", {
         {title: "ITEMS", field: "items", hozAlign: "center", sorter: "string", resizable: true, headerSort: true, minWidth: 50},
         {title: "ACCIONES", field: "ID", formatter: formatButton, hozAlign: "center", minWidth: 130}
     ]
+});
+
+
+document.getElementById("download-xlsx").addEventListener("click", function(){
+    table.download("xlsx", "muestras.xlsx", {sheetName:"muestras"});
+});
+
+//trigger download of data.pdf file
+document.getElementById("download-pdf").addEventListener("click", function(){
+    table.download("pdf", "muestras.pdf", {
+        orientation:"portrait", //set page orientation to portrait
+        title:"muestras", //add title to report
+    });
 });
 
 const generalInformation = (data) => {

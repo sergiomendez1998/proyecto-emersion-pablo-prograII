@@ -5,11 +5,19 @@
 
 <body th:replace="~{Shared/Layout::common_layout(~{::section}, ~{::script})}">
 <section class="container">
-    <h1 class="text-center fw-bold">Asociar Items A Muestras</h1>
+
 
     <div class="alert alert-success alert-dismissible fade show" th:if="${mensaje != null}" role="alert">
         <p th:text="${mensaje}" class="fw-bold">mensaje de asociacion de item</p>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <h5 class="card-header text-center">Asociar Items A Muestras</h5>
+    <div class="info-item">
+        <h5 th:text="'Codigo Muestra: ' + ${muestra.getCodigoMuestra()}"></h5>
+        <h5 th:text="'Tipo Muestra: ' + ${muestra.getTipoMuestra().getNombre()}"></h5>
+        <h5 th:text="'Presentacion: ' + ${muestra.getPresentacion()}"></h5>
+        <h5 th:text="'Codigo Solicitud: ' + ${muestra.getSolicitud().getCodigoSolicitud()}"></h5>
     </div>
 
     <form th:action="@{'/asociarItemMuestra/' + ${muestraId}}" method="post" class="row g-3 was-validated my-4">
@@ -24,9 +32,20 @@
         </div>
     </form>
 
+
+
+
     <div  class="cart">
         <article id="article_table_items"  class="">
             <h1 class="text-center fw-bold">ITEM ASOCIADOS</h1>
+            <div>
+                <button id="download-xlsx" class="btn btn-excel">
+                    <i class="fas fa-file-excel"></i> Descargar Excel
+                </button>
+                <button id="download-pdf" class="btn btn-pdf">
+                    <i class="fas fa-file-pdf"></i> Descargar PDF
+                </button>
+            </div>
             <table id="table_muestras_asociadas" class="m-3 table-light table-hover">
                 <thead>
                     <tr>
@@ -51,4 +70,7 @@
 </section>
 <script th:src="@{/js/tabulator.min.js}"></script>
 <script th:src="@{/js/asociar.js}"></script>
+<script type="text/javascript" src="https://oss.sheetjs.com/sheetjs/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.20/jspdf.plugin.autotable.min.js"></script>
 </body>

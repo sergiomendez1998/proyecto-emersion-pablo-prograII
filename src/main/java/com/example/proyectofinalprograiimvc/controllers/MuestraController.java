@@ -187,13 +187,13 @@ public class MuestraController {
         Muestra muestra = muestraService.buscarPorId(muestraId);
 
         Map<Long,String> itemList = new HashMap<>();
+        List<ItemMuestra> itemAsociados = new ArrayList<>();
+
         muestra.getSolicitud().getDetalleSolicitudList().forEach(detalleSolicitud -> {
             if(!detalleSolicitud.isAsociado() && !detalleSolicitud.isEliminado()) {
                 itemList.put(detalleSolicitud.getId(), detalleSolicitud.getItem().getNombre());
             }
         });
-
-        List<ItemMuestra> itemAsociados = new ArrayList<>();
 
         muestra.getItemMuestraList().forEach(itemMuestra -> {
             if (!itemMuestra.isEliminado()){
@@ -201,6 +201,7 @@ public class MuestraController {
             }
         });
 
+        model.addAttribute("muestra", muestra);
         model.addAttribute("muestraId", muestraId);
         model.addAttribute("itemList", itemList);
         model.addAttribute("itemAsociados", itemAsociados);

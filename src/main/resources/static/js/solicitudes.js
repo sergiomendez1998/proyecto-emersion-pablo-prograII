@@ -33,7 +33,7 @@ const formatButton = (cell, formatterParams, onRendered) => {
 }
 
 
-const table = new Tabulator("#table_soli", {
+var table = new Tabulator("#table_soli", {
     layout: "fitColumns",
     responsiveLayout: "collapse",
     columns: [
@@ -46,6 +46,18 @@ const table = new Tabulator("#table_soli", {
         {title: "FECHA DE RECEPCIÓN", hozAlign: "center", minWidth: 150},
         {title: "ACCIONES", field: "ID", formatter: formatButton, hozAlign: "center", minWidth: 120}
     ]
+});
+
+document.getElementById("download-xlsx").addEventListener("click", function(){
+    table.download("xlsx", "solicitudes.xlsx", {sheetName:"solicitudes"});
+});
+
+//trigger download of data.pdf file
+document.getElementById("download-pdf").addEventListener("click", function(){
+    table.download("pdf", "solicitudes.pdf", {
+        orientation:"portrait", //set page orientation to portrait
+        title:"Solicitudes", //add title to report
+    });
 });
 
 const generalInformation = (data) => {
