@@ -8,6 +8,7 @@ import com.example.proyectofinalprograiimvc.repositorio.ItemMuestraRepositorio;
 import com.example.proyectofinalprograiimvc.servicios.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -94,7 +95,7 @@ public class MuestraController {
        }
     }
 
-    @DeleteMapping("/eliminarMuestra/{id}")
+    @PostMapping("/eliminarMuestra/{id}")
     public String eliminarMuestra(@PathVariable Long id, RedirectAttributes redirect){
            Muestra muestra = muestraService.buscarPorId(id);
            muestra.setEliminado(true);
@@ -106,7 +107,7 @@ public class MuestraController {
 
            muestraService.guardar(muestra);
            redirect.addFlashAttribute("mensaje", "Muestra eliminada correctamente");
-          return "redirect:/";
+          return "redirect:/Muestra";
     }
 
     @PostMapping("/asociarItemMuestra/{muestraId}")
@@ -126,10 +127,11 @@ public class MuestraController {
          detalleSolicitudService.guardar(detalleSolicitud);
 
         redirect.addFlashAttribute("mensaje", "Item asociado correctamente");
+
         return "redirect:/Muestra/Asociar/"+muestraId;
     }
 
-    @PutMapping("/desasociarItemMuestra/{muestraId}")
+    @PostMapping("/desasociarItemMuestra/{muestraId}")
     public String desasociarItemMuestra(@PathVariable Long muestraId, Long itemId, RedirectAttributes redirect){
 
         Muestra muestra = muestraService.buscarPorId(muestraId);
@@ -142,11 +144,13 @@ public class MuestraController {
 
         muestraService.guardar(muestra);
         redirect.addFlashAttribute("mensaje", "Item desasociado correctamente");
-        return "redirect:/";
+
+        return "redirect:/Muestra/Asociar/"+muestraId;
     }
 
-    @GetMapping ("/informacionGeneralMuestra/{muestraId}")
-    public String informacionGeneralMuestra(@PathVariable Long muestraId, Model model){
+    @RequestMapping (value = "/informacionGeneralMuestra/{muestraId}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<?> informacionGeneralMuestra(@PathVariable Long muestraId, Model model){
 
         Muestra muestra = muestraService.buscarPorId(muestraId);
 
@@ -165,8 +169,8 @@ public class MuestraController {
         informacionGeneralMuestra.put("estado", "Creado");
         informacionGeneralMuestra.put("cantidadItems", String.valueOf(muestra.getItemMuestraList().size()));
 
-        model.addAttribute("informacionGeneralMuestra", muestra);
-        return "redirect:/";
+
+        return ResponseEntity.ok(informacionGeneralMuestra);
     }
 
     @ModelAttribute
@@ -199,7 +203,8 @@ public class MuestraController {
 
         model.addAttribute("muestraId", muestraId);
         model.addAttribute("itemList", itemList);
-        model.addAttribute("itemAsociados ", itemAsociados);
+        model.addAttribute("itemAsociados", itemAsociados);
+        model.addAttribute("SolicitudCodigo", muestra.getSolicitud().getCodigoSolicitud());
         return "Muestra/Asociar";
     }
 }
