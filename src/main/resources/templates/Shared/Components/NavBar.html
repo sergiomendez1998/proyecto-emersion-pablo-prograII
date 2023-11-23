@@ -6,7 +6,6 @@
         </button>
         <div class="offcanvas offcanvas-start bg-black" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
             <div class="offcanvas-header">
-
                 <h5 class="offcanvas-title text-light" id="offcanvasNavbarLabel">Speci-Lab</h5>
                 <button type="button" class="btn-close bg-light text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
@@ -18,33 +17,15 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/Solicitud/Create">Creación de Solicitud</a>
                     </li>
-                    <div th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
-                    <li  class="nav-item dropdown">
+                    <li th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}" class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="offcanvasNavbarDropdown1" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Mantenimiento de Solicitudes
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="offcanvasNavbarDropdown">
+                        <ul class="dropdown-menu" aria-labelledby="offcanvasNavbarDropdown1">
                             <li><a class="dropdown-item" href="/Solicitud">Solicitudes de Muestras Médicas</a></li>
-                            <li><a class="dropdown-item" href="/Muestra/Crear/">Crear Muestras</a></li>
                             <li><a class="dropdown-item" href="/Muestra">Muestras Creadas</a></li>
                         </ul>
                     </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Mantenimiento Analistas</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="offcanvasNavbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Análisis Técnico de Mercancias
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="offcanvasNavbarDropdown">
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Consulta de Documentos</a></li>
-                        </ul>
-                    </li>
-                    </div>
                     <li class="nav-item">
                         <form method="POST" th:action="@{/logout}">
                             <button type="submit" class="btn btn-link nav-link">
