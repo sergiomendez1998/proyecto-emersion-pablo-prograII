@@ -11,6 +11,7 @@
       <table id="table_muestras" class="m-3 table-light table-hover">
         <thead>
         <tr>
+          <th class="text-center">ID</th>
           <th class="text-center">CO. MUESTRA</th>
           <th class="text-center">TIPO MUESTRA</th>
           <th class="text-center">CO. SOLICITUD</th>
@@ -26,6 +27,7 @@
         </thead>
         <tbody>
         <tr th:each="muestra: ${muestras}">
+          <td th:text="${muestra.getId()}"></td>
           <td th:text="${muestra.getCodigoMuestra()}"></td>
           <td th:text="${muestra.getTipoMuestra().getNombre()}"></td>
           <td th:text="${muestra.getSolicitud().getCodigoSolicitud()}"></td>

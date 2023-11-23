@@ -36,4 +36,5 @@ public class MuestraServiceImpl implements CrudService<Muestra> {
 
     @Override
     public void actualizar(Muestra entidad) { muestraRepositorio.save(entidad);    }
+
 }

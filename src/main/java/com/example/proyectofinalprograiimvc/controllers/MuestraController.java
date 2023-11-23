@@ -14,10 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class MuestraController {
@@ -129,7 +126,7 @@ public class MuestraController {
          detalleSolicitudService.guardar(detalleSolicitud);
 
         redirect.addFlashAttribute("mensaje", "Item asociado correctamente");
-        return "redirect:/";
+        return "redirect:/Muestra/Asociar/"+muestraId;
     }
 
     @PutMapping("/desasociarItemMuestra/{muestraId}")
@@ -154,6 +151,7 @@ public class MuestraController {
         Muestra muestra = muestraService.buscarPorId(muestraId);
 
         Map<String, String> informacionGeneralMuestra = new HashMap<>();
+        informacionGeneralMuestra.put("id", String.valueOf(muestra.getId()));
         informacionGeneralMuestra.put("codigoDeMuestra", muestra.getCodigoMuestra());
         informacionGeneralMuestra.put("presentacion", muestra.getPresentacion());
         informacionGeneralMuestra.put("cantidad", String.valueOf(muestra.getCantidad()));
@@ -178,5 +176,30 @@ public class MuestraController {
 
         List<TipoMuestra> tipoMuestras = tipoMuestraService.listarTodos();
         model.addAttribute("tipoMuestras", tipoMuestras);
+    }
+
+    @GetMapping("/Muestra/Asociar/{muestraId}")
+    public String Asociar(@PathVariable long muestraId,Model model){
+        Muestra muestra = muestraService.buscarPorId(muestraId);
+
+        Map<Long,String> itemList = new HashMap<>();
+        muestra.getSolicitud().getDetalleSolicitudList().forEach(detalleSolicitud -> {
+            if(!detalleSolicitud.isAsociado() && !detalleSolicitud.isEliminado()) {
+                itemList.put(detalleSolicitud.getId(), detalleSolicitud.getItem().getNombre());
+            }
+        });
+
+        List<ItemMuestra> itemAsociados = new ArrayList<>();
+
+        muestra.getItemMuestraList().forEach(itemMuestra -> {
+            if (!itemMuestra.isEliminado()){
+                itemAsociados.add(itemMuestra);
+            }
+        });
+
+        model.addAttribute("muestraId", muestraId);
+        model.addAttribute("itemList", itemList);
+        model.addAttribute("itemAsociados ", itemAsociados);
+        return "Muestra/Asociar";
     }
 }
