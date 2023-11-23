@@ -11,20 +11,31 @@
       <table id="table_muestras" class="m-3 table-light table-hover">
         <thead>
         <tr>
-          <th>ID</th>
-          <th>NOMBRE</th>
-          <th>FECHA ACTUAL</th>
-          <th>FECHA DE CREACIÓN</th>
-          <th>DESCRIPCIÓN</th>
+          <th class="text-center">CO. MUESTRA</th>
+          <th class="text-center">TIPO MUESTRA</th>
+          <th class="text-center">CO. SOLICITUD</th>
+          <th class="text-center">NO. EXPEDIENTE</th>
+          <th class="text-center">NIT</th>
+          <th class="text-center">PRESENTACION</th>
+          <th class="text-center">FECHA SOLICITUD</th>
+          <th class="text-center">FECHA</th>
+          <th class="text-center">U MEDIDA</th>
+          <th class="text-center">ITEMS</th>
+          <th class="text-center">ACCIONES</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="muestras: ${tipoMuestras}">
-          <td th:text="${muestras.getId()}"></td>
-          <td th:text="${muestras.getNombre()}"></td>
-          <td th:text="${muestras.getFechaActualizacion()}"></td>
-          <td th:text="${muestras.getFechaCreacion()}"></td>
-          <td th:text="${muestras.getDescripcion()}"></td>
+        <tr th:each="muestra: ${muestras}">
+          <td th:text="${muestra.getCodigoMuestra()}"></td>
+          <td th:text="${muestra.getTipoMuestra().getNombre()}"></td>
+          <td th:text="${muestra.getSolicitud().getCodigoSolicitud()}"></td>
+          <td th:text="${muestra.getSolicitud().getCliente().getNumeroExpediente()}"></td>
+          <td th:text="${muestra.getSolicitud().getCliente().getNit()}"></td>
+          <td th:text="${muestra.getPresentacion()}"></td>
+          <td th:text="${muestra.getSolicitud().getFechaRecepcion()}"></td>
+          <td th:text="${muestra.getFechaCreacion()}"></td>
+          <td th:text="${muestra.getUnidadMedida().getNombre().toUpperCase()}"></td>
+          <td th:text="${muestra.getItemMuestraList().size()}"></td>
         </tr>
         </tbody>
       </table>

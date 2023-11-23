@@ -50,7 +50,8 @@ public class MuestraController {
     }
 
     @GetMapping("/Muestra")
-    public String mostrarMuestras(){
+    public String mostrarMuestras(Model model){
+        model.addAttribute("muestras", muestraService.listarTodos());
         return "Muestra/MostrarMuestras";
     }
 
