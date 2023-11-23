@@ -47,6 +47,7 @@ const table = new Tabulator("#table_soli", {
         {title: "ACCIONES", field: "ID", formatter: formatButton, hozAlign: "center", minWidth: 120}
     ]
 });
+
 const generalInformation = (data) => {
     const cardBody = Object.keys(data).map((key, idx) => {
         const li = document.createElement("li");

@@ -1,0 +1,36 @@
+<head th:replace="~{Shared/Layout::common_head(~{::title}, ~{::link})}">
+  <title>Listar Solicitud</title>
+  <link rel="stylesheet" th:href="@{/css/tabulator.min.css}">
+</head>
+
+<body th:replace="~{Shared/Layout::common_layout(~{::section}, ~{::script})}">
+<section class="container">
+  <div  class="cart">
+    <article id="article_table_items"  class="">
+      <h1 class="text-center fw-bold">MUESTRAS</h1>
+      <table id="table_muestras" class="m-3 table-light table-hover">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>NOMBRE</th>
+          <th>FECHA ACTUAL</th>
+          <th>FECHA DE CREACIÓN</th>
+          <th>DESCRIPCIÓN</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="muestras: ${tipoMuestras}">
+          <td th:text="${muestras.getId()}"></td>
+          <td th:text="${muestras.getNombre()}"></td>
+          <td th:text="${muestras.getFechaActualizacion()}"></td>
+          <td th:text="${muestras.getFechaCreacion()}"></td>
+          <td th:text="${muestras.getDescripcion()}"></td>
+        </tr>
+        </tbody>
+      </table>
+    </article>
+  </div>
+</section>
+<script th:src="@{/js/tabulator.min.js}"></script>
+<script th:src="@{/js/muestras.js}"></script>
+</body>

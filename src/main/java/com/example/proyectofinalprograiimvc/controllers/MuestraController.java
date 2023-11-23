@@ -49,6 +49,11 @@ public class MuestraController {
         return "Muestra/Crear";
     }
 
+    @GetMapping("/Muestra")
+    public String mostrarMuestras(){
+        return "Muestra/MostrarMuestras";
+    }
+
     @PostMapping("/Muestra/Crear")
     public String guardarMuestra(@Valid MuestraDTO muestraDTO, BindingResult bindingResult, RedirectAttributes redirect, Model model){
 
